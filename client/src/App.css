@@ -54,19 +54,43 @@ body {
   border-radius: 10px;
 }
 #splash-screen {
-  background-image: linear-gradient(to bottom, #b8b808, #636723);
-  color: white;
-  font-size: 5vw;
+  background-image: linear-gradient(to bottom, #f3e490, #5f5ecc);
   border-color: black;
   border-width: 2px;
   border-style: solid;
   border-radius: 10px;
-  padding-left: 10%;
   padding-top: 5%;
   padding-bottom: 5%;
   height:70%;
-  text-align: center;
   vertical-align: center;
+  text-align: center;
+}
+#title{
+  color: black;
+  font-size: 3vw;
+  font-weight: lighter;
+}
+#subtitle{
+  font-size: 1.3vw;
+  color: rgb(27, 27, 27);
+  font-style: italic;
+}
+.info-banner{
+  background-color: white;
+  width: 25%;
+  height: 62%;
+  margin: 4%;
+  margin-top: 2%;
+  float: left;
+  justify-content: center;
+}
+.banner-text{
+  font-size: 1.4vw;
+  margin-top: 1.1%;
+  font-weight: bold;
+}
+.title-buttons{
+  
 }
 
 #edit-toolbar {
