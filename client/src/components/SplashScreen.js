@@ -1,6 +1,8 @@
 import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
 import SortIcon from '@mui/icons-material/Sort';
 import ConnectWithoutContactIcon from '@mui/icons-material/ConnectWithoutContact';
+import Button from '@mui/material/Button';
+import { Link } from 'react-router-dom'
 
 export default function SplashScreen() {
     return (
@@ -20,7 +22,13 @@ export default function SplashScreen() {
                 <ConnectWithoutContactIcon class='banner-icon'/>
             </div>
             <div class='title-buttons'>
-                
+                <Button id='login-button' ><Link to='/login/'> Login </Link></Button>
+                <Button id='create-button' ><Link to='/register/'> Create Account </Link> </Button>
+            </div>
+            <div id='guest-box'>
+                <Link id='guest-button'>
+                    or continue as guest...
+                </Link>
             </div>
         </div>
     )

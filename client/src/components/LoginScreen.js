@@ -18,6 +18,7 @@ import Paper from '@mui/material/Paper';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import Modal from '@mui/material/Modal';
+import { height } from '@mui/system';
 
 const style = {
     position: 'absolute',
@@ -28,7 +29,7 @@ const style = {
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
-    p: 4
+    p: 4,
 };
 
 const theme = createTheme();
@@ -56,28 +57,12 @@ export default function LoginScreen() {
 
     return (
         <ThemeProvider theme={theme}>
-            <Grid container component="main" sx={{ mt: 0 }}>
+            <Grid container component="main" maxWidth="xs" sx={{bgcolor: 'beige', height:"91%"}}>
                 <CssBaseline />
-                <Grid
-                    item
-                    xs={false}
-                    sm={4}
-                    md={7}
-                    sx={{
-                        // backgroundImage: 'url(https://source.unsplash.com/random)',
-                        backgroundImage: 'url(http://images6.fanpop.com/image/photos/43500000/Cozy-Autumn-Vibes-autumn-43506525-1024-1280.jpg)',
-                        backgroundRepeat: 'no-repeat',
-                        backgroundColor: (t) =>
-                            t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
-                    }}
-                />
-                <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
                     <Box
                         sx={{
-                            my: 8,
-                            mx: 4,
+                            marginTop: 8,
+                            mx: 50,
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
@@ -137,7 +122,6 @@ export default function LoginScreen() {
                             <Copyright sx={{ mt: 5 }} />
                         </Box>
                     </Box>
-                </Grid>
             </Grid>
 
         <Modal

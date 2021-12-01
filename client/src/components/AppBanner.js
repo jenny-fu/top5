@@ -33,26 +33,26 @@ export default function AppBanner() {
     }
 
     const menuId = 'primary-search-account-menu';
-    const loggedOutMenu = (
-        <Menu
-            anchorEl={anchorEl}
-            anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-            }}
-            id={menuId}
-            keepMounted
-            transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-            }}
-            open={isMenuOpen}
-            onClose={handleMenuClose}
-        >
-            <MenuItem onClick={handleMenuClose}><Link to='/login/'>Login</Link></MenuItem>
-            <MenuItem onClick={handleMenuClose}><Link to='/register/'>Create New Account</Link></MenuItem>
-        </Menu>
-    );
+    // const loggedOutMenu = (
+    //     <Menu
+    //         anchorEl={anchorEl}
+    //         anchorOrigin={{
+    //             vertical: 'top',
+    //             horizontal: 'right',
+    //         }}
+    //         id={menuId}
+    //         keepMounted
+    //         transformOrigin={{
+    //             vertical: 'top',
+    //             horizontal: 'right',
+    //         }}
+    //         open={isMenuOpen}
+    //         onClose={handleMenuClose}
+    //     >
+    //         <MenuItem onClick={handleMenuClose}><Link to='/login/'>Login</Link></MenuItem>
+    //         <MenuItem onClick={handleMenuClose}><Link to='/register/'>Create New Account</Link></MenuItem>
+    //     </Menu>
+    // );
     const loggedInMenu = 
         <Menu
             anchorEl={anchorEl}
@@ -73,7 +73,7 @@ export default function AppBanner() {
         </Menu>        
 
     let editToolbar = "";
-    let menu = loggedOutMenu;
+    let menu = null;
     if (auth.loggedIn) {
         menu = loggedInMenu;
         // if (store.currentList) {
