@@ -112,7 +112,19 @@ body {
 
 #edit-toolbar {
   background-color: transparent;
-  float: right;
+  height: 60px;
+}
+
+#username{
+  border-color: black;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 50%;
+  background-color: coral;
+  width: 30px;
+  height: 30px;
+  font-size: 19px;
+  color: black;
 }
 
 .top5-button,
@@ -156,14 +168,14 @@ body {
 #top5-statusbar {
   position: absolute;
   left: 0%;
-  top: 90%;
+  top: 95%;
   width: 100%;
   height: 10%;
-  background-color: lightsalmon;
+  /* background-color: lightsalmon; */
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 36pt;
+  /* font-size: 36pt; */
 }
 
 #list-selector-heading {
@@ -182,6 +194,7 @@ body {
 
 #add-list-button {
   float: left;
+  color: black;
 }
 
 #list-selector-list {

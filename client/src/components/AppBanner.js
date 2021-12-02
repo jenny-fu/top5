@@ -77,7 +77,7 @@ export default function AppBanner() {
     if (auth.loggedIn) {
         menu = loggedInMenu;
         // if (store.currentList) {
-            editToolbar = <EditToolbar />;
+            // editToolbar = <EditToolbar />;
         // }
     }
     
@@ -88,6 +88,7 @@ export default function AppBanner() {
             variant="h4"
             noWrap
             component="div"
+            id="username"
             sx={{ display: { xs: 'none', sm: 'block' } }}    >
                 {auth.user.firstName[0] + auth.user.lastName[0]}
             </Typography>;

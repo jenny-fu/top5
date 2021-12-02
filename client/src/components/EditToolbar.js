@@ -1,9 +1,12 @@
 import { useContext } from 'react'
 import { GlobalStoreContext } from '../store'
 import Button from '@mui/material/Button';
-import UndoIcon from '@mui/icons-material/Undo';
-import RedoIcon from '@mui/icons-material/Redo';
-import CloseIcon from '@mui/icons-material/HighlightOff';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
+import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
+import FunctionsOutlinedIcon from '@mui/icons-material/FunctionsOutlined';
+import SortOutlinedIcon from '@mui/icons-material/SortOutlined';
+import TextField from '@mui/material/TextField';
 
 /*
     This toolbar is a functional React component that
@@ -36,26 +39,33 @@ function EditToolbar() {
     
     return (
         <div id="edit-toolbar">
-            <Button 
-                disabled={disabledUndo}
-                id='undo-button'
-                onClick={handleUndo}
-                variant="contained">
-                    <UndoIcon />
+            <Button>
+                <HomeOutlinedIcon style={{height: '40px', width : '50px', color:'black'}} />
             </Button>
-            <Button 
-                disabled={disabledRedo}
-                id='redo-button'
-                onClick={handleRedo}
-                variant="contained">
-                    <RedoIcon />
+            <Button>
+                <GroupsOutlinedIcon style={{height: '40px', width : '50px', color:'black'}}/>
             </Button>
-            <Button 
-                disabled={disabled}
-                id='close-button'
-                onClick={handleClose}
-                variant="contained">
-                    <CloseIcon />
+            <Button>
+                <PersonOutlinedIcon style={{height: '40px', width : '50px', color:'black'}}/>
+            </Button>
+            <Button>
+                <FunctionsOutlinedIcon style={{height: '40px', width : '50px', color:'black'}}/>
+            </Button>
+            <TextField
+                style={{width : '500px', marginRight: '19%', marginTop:'0.2%'}}
+                // margin="normal"
+                // required
+                id="search"
+                label="Search"
+                name="search"
+                autoComplete="search"
+                // autoFocus
+                />
+            <Button style={{height: '40px', width : '100px', color:'black'}}>
+                Sort By
+            </Button>
+            <Button>
+                <SortOutlinedIcon style={{height: '45px', width : '50px', color:'black'}}/>
             </Button>
         </div>
     )
