@@ -4,15 +4,18 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import ListItem from '@mui/material/ListItem';
 import IconButton from '@mui/material/IconButton';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined';
+import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 
-const style = {
+const style = { //modal style
     position: 'absolute',
     top: '50%',
     left: '50%',
@@ -96,24 +99,41 @@ function ListCard(props) {
                 width: '100%',
             }}
         >
+        {/* <Box id='list-top' sx={{flexGrow: 1, width:'100%'}}> */}
             <Box sx={{ p: 1, flexGrow: 1 }}
-                onClick={(event) => {
-                    handleLoadList(event, idNamePair._id)
-                }
-                }>{idNamePair.name}
+                // onClick={(event) => {
+                //     handleLoadList(event, idNamePair._id)
+                // }
+                // }
+                >{idNamePair.name}
             </Box>
-            <Box sx={{ p: 1 }}>
+
+            <Box>
                 <IconButton>
-                    <EditIcon style={{ fontSize: '20pt' }} />
+                    <ThumbUpOutlinedIcon style={{ fontSize: '20pt' }} />
                 </IconButton>
             </Box>
-            <Box sx={{ p: 1 }}>
+            <Box>
+                <IconButton>
+                    <ThumbDownOutlinedIcon style={{ fontSize: '20pt' }} />
+                </IconButton>
+            </Box>
+            
+            <Box>
                 <IconButton onClick={(event) => {
                     handleDeleteList(event, idNamePair._id)
                 }} aria-label='delete'>
-                    <DeleteIcon style={{ fontSize: '20pt' }} />
+                    <DeleteOutlineOutlinedIcon style={{ fontSize: '20pt' }} />
                 </IconButton>
             </Box>
+        {/* </Box>
+        <Box id='list-bottom' sx={{flexGrow: 1, width:'100%'}}> */}
+            <Box>
+                <IconButton>
+                    <ArrowDropDownIcon style={{ fontSize: '20pt' }} />
+                </IconButton>
+            </Box>
+        {/* </Box> */}
         </ListItem>
 
     // if (editActive) {
@@ -154,7 +174,9 @@ function ListCard(props) {
         </Modal>
     }
     return (
-        <Box>{cardElement}{modal}</Box>
+        <Box>
+            {cardElement}{modal}
+        </Box>
     );
 }
 

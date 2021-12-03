@@ -24,9 +24,10 @@ function Statusbar() {
     let disabled = false;
     if (store.isListEdit()) disabled = true;
 
-    let text ="";
+    let text = "";
     if (store.currentList)
         text = store.currentList.name;
+
     return (
         <div id="top5-statusbar">
             {/* <Typography variant="h4">{text}</Typography> */}

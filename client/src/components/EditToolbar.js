@@ -52,7 +52,8 @@ function EditToolbar() {
                 <FunctionsOutlinedIcon style={{height: '40px', width : '50px', color:'black'}}/>
             </Button>
             <TextField
-                style={{width : '500px', marginRight: '19%', marginTop:'0.2%'}}
+                style={{width : '500px', marginRight: '19%', marginTop:'1%'}}
+                inputProps={{ style: { height: "10px", fontSize:'15px' }}}
                 // margin="normal"
                 // required
                 id="search"
@@ -60,7 +61,7 @@ function EditToolbar() {
                 name="search"
                 autoComplete="search"
                 // autoFocus
-                />
+            />
             <Button style={{height: '40px', width : '100px', color:'black'}}>
                 Sort By
             </Button>

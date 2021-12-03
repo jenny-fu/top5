@@ -220,13 +220,11 @@ function GlobalStoreContextProvider(props) {
         };
         const response = await api.createTop5List(payload);
         if (response.data.success) {
-            tps.clearAllTransactions();
             let newList = response.data.top5List;
             storeReducer({
                 type: GlobalStoreActionType.CREATE_NEW_LIST,
                 payload: newList
-            }
-            );
+            });
 
             // IF IT'S A VALID LIST THEN LET'S START EDITING IT
             history.push("/top5list/" + newList._id);

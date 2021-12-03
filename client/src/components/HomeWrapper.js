@@ -9,7 +9,7 @@ export default function HomeWrapper() {
     console.log("HomeWrapper auth.loggedIn: " + auth.loggedIn);
     
     if (auth.loggedIn)
-        return <div><AppBanner /><HomeScreen /><Statusbar /></div>
+        return <div><HomeScreen /><Statusbar /></div>
     else
         return <SplashScreen />
 }
