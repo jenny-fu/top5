@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import Top5Item from './Top5Item.js'
 import List from '@mui/material/List';
 import { TextField, Typography } from '@mui/material'
@@ -6,6 +6,7 @@ import { GlobalStoreContext } from '../store/index.js'
 import EditToolbar from './EditToolbar.js';
 import { Fab, Button } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
+import { Link } from 'react-router-dom'
 /*
     This React component lets us edit a loaded list, which only
     happens when we are on the proper route.
@@ -14,6 +15,18 @@ import AddIcon from '@mui/icons-material/Add';
 */
 function WorkspaceScreen() {
     const { store } = useContext(GlobalStoreContext);
+    const [title, setTitle] = useState(store.currentList.name);
+    let listItems = store.currentList.items;
+
+    function updateList(){
+        store.changeList(title, listItems);
+    }
+    function handleSetTitle(e){
+        setTitle(e.target.value);
+    }
+    function updateItems(index, value){
+        listItems[index] = value;
+    }
 
     let editItems = "";
     if (store.currentList) {
@@ -26,6 +39,7 @@ function WorkspaceScreen() {
                             key={'top5-item-' + (index + 1)}
                             text={item}
                             index={index}
+                            updateItems={updateItems}
                         />
                     ))
                 }
@@ -38,14 +52,16 @@ function WorkspaceScreen() {
             <EditToolbar />
             <div id="top5-workspace">
                 <TextField
-                    style={{ width: '400px', marginLeft: '1.5%', marginTop: '1%' }}
-                    inputProps={{ style: { height: "10px", fontSize: '15px' } }}
+                    value={title}
+                    style={{ width: '400px', marginLeft: '1.5%', marginTop: '1%', backgroundColor:'white', borderRadius:'4px' }}
+                    inputProps={{ style: { height: "10px", fontSize: '15px'} }}
                     required
                     id="title"
-                    label="Title"
+                    // label="Title"
                     name="title"
                     autoComplete="Title"
                     autoFocus
+                    onChange={handleSetTitle}
                 />
                 <div id="workspace-edit">
                     <div id="edit-numbering">
@@ -59,8 +75,7 @@ function WorkspaceScreen() {
                 </div>
             </div>
             {/* <Statusbar /> */}
-            <div id="top5-statusbar">
-                {/* <Typography variant="h4">{text}</Typography> */}
+            <div id="top5-statusbar" className='disabled'>
                 <div id="list-selector-heading">
                     <Button
                         color="primary"
@@ -68,10 +83,19 @@ function WorkspaceScreen() {
                         id="add-list-button"
                     // disabled={disabled}
                     >
-                        <AddIcon />
+                        <AddIcon style={{color:'grey'}} />
                     </Button>
                     <Typography variant="h4">Your Lists</Typography>
                 </div>
+            </div>
+            <div id='edit-buttons'>
+                <Button style={{color:'black', backgroundColor:'lightgrey', border:'solid 1px', borderRadius: '10px', marginRight:'20px'}} 
+                    onClick={updateList} >
+                    Save
+                </Button>
+                <Button style={{color:'black', backgroundColor:'lightgrey', border:'solid 1px', borderRadius: '10px'}}>
+                    Publish 
+                </Button>
             </div>
         </div>
     )

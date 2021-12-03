@@ -40,7 +40,7 @@ function EditToolbar() {
     return (
         <div id="edit-toolbar">
             <Button>
-                <HomeOutlinedIcon style={{height: '40px', width : '50px', color:'black'}} />
+                <HomeOutlinedIcon style={{height: '40px', width : '50px', color:'black'}}/>
             </Button>
             <Button>
                 <GroupsOutlinedIcon style={{height: '40px', width : '50px', color:'black'}}/>
@@ -52,7 +52,7 @@ function EditToolbar() {
                 <FunctionsOutlinedIcon style={{height: '40px', width : '50px', color:'black'}}/>
             </Button>
             <TextField
-                style={{width : '500px', marginRight: '19%', marginTop:'1%'}}
+                style={{width : '500px', marginRight: '19%', marginTop:'1%', backgroundColor:'white', borderRadius:'4px'}}
                 inputProps={{ style: { height: "10px", fontSize:'15px' }}}
                 // margin="normal"
                 // required

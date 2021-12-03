@@ -16,9 +16,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Paper from '@mui/material/Paper';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
 import Modal from '@mui/material/Modal';
-import { height } from '@mui/system';
 
 const style = {
     position: 'absolute',
@@ -57,7 +55,7 @@ export default function LoginScreen() {
 
     return (
         <ThemeProvider theme={theme}>
-            <Grid container component="main" maxWidth="xs" sx={{bgcolor: 'beige', height:"91%"}}>
+            <Grid container component="main" maxWidth="xs" sx={{bgcolor: 'grey', height:"91%"}}>
                 <CssBaseline />
                     <Box
                         sx={{

@@ -3,8 +3,6 @@ import { GlobalStoreContext } from '../store'
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import ListItem from '@mui/material/ListItem';
-import IconButton from '@mui/material/IconButton';
-import EditIcon from '@mui/icons-material/Edit';
 /*
     This React component represents a single item in our
     Top 5 List, which can be edited or moved around.
@@ -12,12 +10,21 @@ import EditIcon from '@mui/icons-material/Edit';
     @author McKilla Gorilla
 */
 function Top5Item(props) {
+    const { store } = useContext(GlobalStoreContext);
     let { index } = props;
+    const [text, setText] = useState(store.currentList.items[index]);
+
+    function handleSetText(e){
+        setText(e.target.value);
+    }
+    function handleItem(){
+        props.updateItems(index, text);
+    }
 
     return (
         <ListItem
             id={'item-' + (index + 1)}
-            // key={props.key}
+            key={props.key}
             sx={{ display: 'flex'}}
             style={{
                 height: '20%',
@@ -34,6 +41,9 @@ function Top5Item(props) {
                     inputProps={{ style: { height: "89%", fontSize: '20px' } }}
                     id="name"
                     name="name"
+                    value={text}
+                    onChange={handleSetText}
+                    onBlur={handleItem}
                 />
         </ListItem>
     );

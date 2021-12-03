@@ -87,16 +87,20 @@ function ListCard(props) {
     // function handleUpdateText(event) {
     //     setText(event.target.value);
     // }
+    let background='beige';
 
     let cardElement =
         <ListItem
             id={idNamePair._id}
             key={idNamePair._id}
             sx={{display: 'flex', p: 1 }}
-            button
             style={{
                 fontSize: '20pt',
                 width: '100%',
+                backgroundColor: background,
+                marginBottom:'1%',
+                borderRadius:'10px',
+                border:'solid 1px',
             }}
         >
         {/* <Box id='list-top' sx={{flexGrow: 1, width:'100%'}}> */}

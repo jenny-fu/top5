@@ -82,7 +82,7 @@ function GlobalStoreContextProvider(props) {
                     idNamePairs: store.idNamePairs,
                     currentList: payload,
                     newListCounter: store.newListCounter + 1,
-                    isListNameEditActive: false,
+                    isListNameEditActive: true,
                     isItemEditActive: false,
                     listMarkedForDeletion: null
                 })
@@ -215,7 +215,8 @@ function GlobalStoreContextProvider(props) {
         let newListName = "Untitled" + store.newListCounter;
         let payload = {
             name: newListName,
-            items: ["?", "?", "?", "?", "?"],
+            items: ["", "", "", "", ""],
+            published: false,
             ownerEmail: auth.user.email
         };
         const response = await api.createTop5List(payload);
@@ -419,6 +420,45 @@ function GlobalStoreContextProvider(props) {
 
         // NOW MAKE IT OFFICIAL
         store.updateCurrentList();
+    }
+
+    store.changeList = async function(newName, listItems) {
+        let response = await api.getTop5ListById(store.currentList._id);
+        if (response.data.success) {
+            let top5List = response.data.top5List;
+            top5List.name = newName;
+            top5List.items = listItems;
+            async function updateList(top5List) {
+                response = await api.updateTop5ListById(top5List._id, top5List);
+                if (response.data.success) {
+                    async function getListPairs() {
+                        response = await api.getTop5ListPairs();
+                        if (response.data.success) {
+                            let pairsArray = response.data.idNamePairs;
+
+                            let out = [];
+                            for (let i = 0; i < pairsArray.length; i++) {
+                                if (pairsArray[i].owner === auth.user.email) {
+                                    out.push(pairsArray[i]);
+                                }
+                            }
+
+                            storeReducer({
+                                type: GlobalStoreActionType.CHANGE_LIST_NAME,
+                                payload: {
+                                    idNamePairs: out,
+                                    top5List: null
+                                }
+                            });
+                        }
+                    }
+                    getListPairs(top5List);
+                }
+            }
+            updateList(top5List);
+        }
+        // store.updateCurrentList();
+        history.push("/");
     }
 
     return (

@@ -10,7 +10,7 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
-import AccountCircle from '@mui/icons-material/AccountCircle';
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 
 export default function AppBanner() {
     const { auth } = useContext(AuthContext);
@@ -82,7 +82,7 @@ export default function AppBanner() {
     }
     
     function getAccountMenu(loggedIn) {
-        if(!loggedIn) return <AccountCircle />;
+        if(!loggedIn) return <AccountCircleOutlinedIcon style={{color: 'black'}}/>;
         else{
             return <Typography
             variant="h4"
@@ -97,7 +97,7 @@ export default function AppBanner() {
 
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static">
+            <AppBar position="static" style={{backgroundColor:'lightgrey'}}>
                 <Toolbar>
                     <Typography                        
                         variant="h4"
@@ -105,7 +105,7 @@ export default function AppBanner() {
                         component="div"
                         sx={{ display: { xs: 'none', sm: 'block' } }}                        
                     >
-                        <Link style={{ textDecoration: 'none', color: 'white' }} to='/'>T<sup>5</sup>L</Link>
+                        <Link style={{ textDecoration: 'none', color: 'goldenrod' }} to='/'>T<sup>5</sup>L</Link>
                     </Typography>
                     <Box sx={{ flexGrow: 1 }}>{editToolbar}</Box>
                     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
