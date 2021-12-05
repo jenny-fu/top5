@@ -4,28 +4,56 @@ import List from '@mui/material/List';
 import { TextField, Typography } from '@mui/material'
 import { GlobalStoreContext } from '../store/index.js'
 import EditToolbar from './EditToolbar.js';
-import { Fab, Button } from '@mui/material'
+import { Button } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
-import { Link } from 'react-router-dom'
+
+import * as React from 'react';
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
 /*
     This React component lets us edit a loaded list, which only
     happens when we are on the proper route.
     
     @author McKilla Gorilla
 */
+const modalStyle = { //modal style
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 350,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4
+};
+
 function WorkspaceScreen() {
     const { store } = useContext(GlobalStoreContext);
     const [title, setTitle] = useState(store.currentList.name);
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
     let listItems = store.currentList.items;
     let disabled = false;
     let name = "";
     let style={color:'black', backgroundColor:'lightgrey', border:'solid 1px', borderRadius: '10px'};
 
     function updateList(){
-        store.changeList(title, listItems, false);
+        if(title === '') handleOpen();
+        else store.changeList(title, listItems, false);
     }
     function publishList(){
-        store.changeList(title, listItems, true);
+        let pub = true;
+        for(let i = 0; i < 5; i++){
+            if(listItems[i] === ""){
+                pub = false;
+            }
+        }
+
+        if(title === '' || !pub) handleOpen();
+        else store.changeList(title, listItems, true);
     }
     function handleSetTitle(e){
         setTitle(e.target.value);
@@ -61,6 +89,19 @@ function WorkspaceScreen() {
                 {/* </div> */}
             </List>;
     }
+
+    let modal = <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description">
+            <Box sx={modalStyle} style={{textAlign:'center'}}>
+                <Typography id="modal-modal-title" variant="h5" component="h2">
+                    Title/item information is missing!
+                </Typography>
+                <Button variant="outlined" onClick={handleClose}>Confirm</Button>
+            </Box>
+        </Modal>
 
     return (
         <div>
@@ -112,6 +153,7 @@ function WorkspaceScreen() {
                     Publish 
                 </Button>
             </div>
+            {modal}
         </div>
     )
 }

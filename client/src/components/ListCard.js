@@ -41,7 +41,6 @@ function ListCard(props) {
     // const [text, setText] = useState("");
     const { idNamePair } = props;
 
-
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -236,8 +235,7 @@ function ListCard(props) {
     // }
     let modal = <Box></Box>
     if(store.listMarkedForDeletion){
-        modal = 
-        <Modal
+        modal = <Modal
             open={open}
             onClose={handleClose}
             aria-labelledby="modal-modal-title"
