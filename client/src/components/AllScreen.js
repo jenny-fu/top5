@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 // import AuthContext from '../auth'
 import { GlobalStoreContext } from '../store'
-import ListCard from './ListCard.js'
+import AllCard from './AllCard.js'
 import EditToolbar from './EditToolbar.js'
 import List from '@mui/material/List';
 /*
@@ -9,12 +9,12 @@ import List from '@mui/material/List';
     
     @author McKilla Gorilla
 */
-const HomeScreen = (props) => {
+const AllScreen = () => {
     const { store } = useContext(GlobalStoreContext);
     // const { auth } = useContext(AuthContext);
 
     useEffect(() => {
-        store.loadIdNamePairs();
+        store.loadAllNamePairs();
     }, []);
 
     // function handleCreateNewList() {
@@ -25,12 +25,13 @@ const HomeScreen = (props) => {
     // if (store.isListEdit()) disabled = true;
 
     let listCard = "";
+
     if (store) {
         listCard =
             <List sx={{ width: '90%', left: '5%' }}>
                 {
                     store.idNamePairs.map((pair) => (
-                        <ListCard
+                        <AllCard
                             key={pair._id}
                             idNamePair={pair}
                             selected={false}
@@ -39,14 +40,9 @@ const HomeScreen = (props) => {
                 }
             </List>;
     }
-
-    function sortBy(sort){
-        store.sortBy(sort);
-    }
-
     return (
         <div id="top5-list-selector">
-            <EditToolbar sortBy={sortBy}/>
+            <EditToolbar />
             <div id="list-selector-list">
                 {
                     listCard
@@ -55,4 +51,4 @@ const HomeScreen = (props) => {
         </div>)
 }
 
-export default HomeScreen;
+export default AllScreen;

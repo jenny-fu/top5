@@ -73,6 +73,14 @@ function WorkspaceScreen() {
                 pub = false;
             }
         }
+        let dupeItem = false;
+        for(let k = 0; k < 5; k++){
+            for(let m = k+1; m < 5; m++){
+                if(listItems[k] === listItems[m])
+                    dupeItem = true;
+                    break;
+            }
+        }
 
         if(title === ''){
             setError("Title is missing!");
@@ -82,6 +90,9 @@ function WorkspaceScreen() {
             handleOpen();
         }else if(!pub){
             setError("Item information is missing!");
+            handleOpen();
+        }else if(dupeItem){
+            setError("Multiple of the same item information can not be published!");
             handleOpen();
         }
         else store.changeList(title, listItems, true);

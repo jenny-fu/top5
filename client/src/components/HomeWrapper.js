@@ -2,7 +2,7 @@ import { useContext } from 'react'
 import HomeScreen from './HomeScreen'
 import SplashScreen from './SplashScreen'
 import AuthContext from '../auth'
-import { AppBanner, Statusbar } from '.';
+import { Statusbar } from '.';
 
 export default function HomeWrapper() {
     const { auth } = useContext(AuthContext);

@@ -9,6 +9,9 @@ import SplashScreen from './SplashScreen'
 import Statusbar from './Statusbar'
 import Top5Item from './Top5Item'
 import WorkspaceScreen from './WorkspaceScreen'
+import AllScreen from './AllScreen'
+import AllCard from './AllCard'
+import UserScreen from './UserScreen'
 /*
     This serves as a module so that we can import
     all the other components as we wish.
@@ -21,9 +24,13 @@ export {
     HomeScreen,
     HomeWrapper,
     ListCard, 
+    AllCard,
     RegisterScreen,
     LoginScreen,
     SplashScreen,
     Statusbar, 
     Top5Item, 
-    WorkspaceScreen }
+    WorkspaceScreen,
+    AllScreen,
+    UserScreen
+}

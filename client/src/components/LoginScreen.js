@@ -14,7 +14,6 @@ import { GlobalStoreContext } from '../store'
 import * as React from 'react';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Paper from '@mui/material/Paper';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Modal from '@mui/material/Modal';
 

@@ -1,6 +1,5 @@
 import { useContext, useState } from 'react'
 import { GlobalStoreContext } from '../store'
-import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import ListItem from '@mui/material/ListItem';
 import List from '@mui/material/List';
@@ -37,6 +36,15 @@ let listStyle = {
     border: 'solid 1px',
     height: '90px',
 }
+let pubStyle = {
+    fontSize: '20pt',
+    width: '100%',
+    backgroundColor: 'lavender',
+    marginBottom: '1%',
+    borderRadius: '10px',
+    border: 'solid 1px',
+    height: '90px',
+}
 
 /*
     This is a card in our list of top 5 lists. It lets select
@@ -50,8 +58,7 @@ function ListCard(props) {
     // const [editActive, setEditActive] = useState(false);
     // const [text, setText] = useState("");
     const { idNamePair } = props;
-    const [expand, setExpand] = React.useState(<div>
-
+    const [expand, setExpand] = useState(<div>
         <div id='list-bottom'>
             <div className='list-left'>
                 <Box style={{ color: 'red', textDecoration: 'underline', cursor: 'pointer' }}
@@ -69,17 +76,34 @@ function ListCard(props) {
         </div>
     </div>);
 
-    const [open, setOpen] = React.useState(false);
+    const [expandPub, setPub] = useState(<div>
+        <div id='list-bottom'>
+            <div className='list-left'>
+                Published: <span style={{ color: 'green' }}>{idNamePair.pubDate}</span>
+            </div>
+            <div className="list-right" style={{ display: 'inline', padding: '8px' }}>
+                Views: <span style={{ color: 'red' }}> {idNamePair.views} </span>
+                <Box style={{ display: 'inline', marginTop: '-8%', float: 'right' }}>
+                    <IconButton onClick={(event) => { handleExpandPub(event, idNamePair._id) }}>
+                        <ArrowDropDownIcon style={{ fontSize: '20pt', color: 'black' }} />
+                    </IconButton>
+                </Box>
+            </div>
+        </div>
+    </div>);
+
+    const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
     function handleLoadList(event, id) {
+        closeView();
         if (!event.target.disabled) {
             // CHANGE THE CURRENT LIST
             store.setCurrentList(id);
         }
     }
-
+    ////////////////////////////////////////////////EDIT CARD////////////////////////////////////////////
     function handleExpandView(event, id) {
         event.stopPropagation();
         store.updateViewing(id);
@@ -134,7 +158,8 @@ function ListCard(props) {
                         </IconButton>
                     </Box>
                 </div>
-            </div></div>);
+            </div>
+        </div>);
 
     }
     function closeView() {
@@ -165,6 +190,90 @@ function ListCard(props) {
             </div>
         </div>);
     }
+    ////////////////////////////////////////////////PUB CARD////////////////////////////////////////////
+    function handleExpandPub(event, id) {
+        event.stopPropagation();
+        store.updateViewing(id);
+        handleExpandPub(event);
+    }
+    function handleExpandPub(event) {
+        event.stopPropagation();
+        let list = store.viewingList;
+        // console.log(list)
+        pubStyle = {
+            fontSize: '20pt',
+            width: '100%',
+            backgroundColor: 'lavender',
+            marginBottom: '1%',
+            borderRadius: '10px',
+            border: 'solid 1px',
+            height: 'fit-content',
+        }
+        setPub(<div style={{ marginTop: '5%', marginBottom: '3%', width: '100%' }}><List>
+            <Box className='view-left'>
+                <ListItem>
+                    1.
+                </ListItem>
+                <ListItem>
+                    2.
+                </ListItem>
+                <ListItem>
+                    3.
+                </ListItem>
+                <ListItem>
+                    4.
+                </ListItem>
+                <ListItem>
+                    5.
+                </ListItem>
+            </Box>
+            <Box className='view-right'>
+
+            </Box>
+        </List>
+            <div id='list-bottom'>
+                <div className='list-left'>
+                    Published: <span style={{ color: 'green' }}>{idNamePair.pubDate}</span>
+                </div>
+                <div className="list-right" style={{ display: 'inline', padding: '8px' }}>
+                    Views: <span style={{ color: 'red' }}> {idNamePair.views} </span>
+                    <Box style={{ display: 'inline', marginTop: '-8%', float: 'right' }}>
+                        <IconButton onClick={closeView}>
+                            <ArrowDropUpIcon style={{ fontSize: '20pt', color: 'black' }} />
+                        </IconButton>
+                    </Box>
+                </div>
+            </div>
+        </div>);
+
+    }
+    function closeView() {
+        pubStyle = {
+            fontSize: '20pt',
+            width: '100%',
+            backgroundColor: 'lavender',
+            marginBottom: '1%',
+            borderRadius: '10px',
+            border: 'solid 1px',
+            height: '90px'
+        }
+        setPub(<div>
+            <div id='list-bottom'>
+                <div className='list-left'>
+                    Published: <span style={{ color: 'green' }}>{idNamePair.pubDate}</span>
+                </div>
+                <div className="list-right" style={{ display: 'inline', padding: '8px' }}>
+                    Views: <span style={{ color: 'red' }}> {idNamePair.views} </span>
+                    <Box style={{ display: 'inline', marginTop: '-8%', float: 'right' }}>
+                        <IconButton onClick={(event) => { handleExpandPub(event, idNamePair._id) }}>
+                            <ArrowDropDownIcon style={{ fontSize: '20pt', color: 'black' }} />
+                        </IconButton>
+                    </Box>
+                </div>
+            </div>
+        </div>);
+    }
+    /////////////////////////////////////////////////////////////////////////////////////////////////
 
     async function handleDeleteList(event, id) {
         event.stopPropagation();
@@ -225,9 +334,7 @@ function ListCard(props) {
                     </Box>
                 </div>
             </div>
-
             {expand}
-
         </ListItem>
 
     if (idNamePair.published) {
@@ -235,16 +342,7 @@ function ListCard(props) {
             id={idNamePair._id}
             key={idNamePair._id}
             sx={{ display: 'flex', p: 1 }}
-            style={{
-                fontSize: '20pt',
-                width: '100%',
-                backgroundColor: 'lavender',
-                marginBottom: '1%',
-                borderRadius: '10px',
-                border: 'solid 1px',
-                height: '90px',
-                // position:'absolute'
-            }}>
+            style={pubStyle}>
             <div id='list-top'>
                 <div className="list-left">
                     <Box
@@ -275,19 +373,7 @@ function ListCard(props) {
                     </Box>
                 </div>
             </div>
-            <div id='list-bottom'>
-                <div className='list-left'>
-                    Published: <span style={{ color: 'green' }}>{idNamePair.pubDate}</span>
-                </div>
-                <div className="list-right" style={{ display: 'inline', padding: '8px' }}>
-                    Views: <span style={{ color: 'red' }}> {idNamePair.views} </span>
-                    <Box style={{ display: 'inline', marginTop: '-8%', float: 'right' }}>
-                        <IconButton>
-                            <ArrowDropDownIcon style={{ fontSize: '20pt', color: 'black' }} />
-                        </IconButton>
-                    </Box>
-                </div>
-            </div>
+            {expandPub}
         </ListItem>
     }
 

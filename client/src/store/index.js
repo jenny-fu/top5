@@ -38,7 +38,7 @@ const tps = new jsTPS();
 function GlobalStoreContextProvider(props) {
     // THESE ARE ALL THE THINGS OUR DATA STORE WILL MANAGE
     const [store, setStore] = useState({
-        idNamePairs: [],
+        idNamePairs: [], //array of objects
         currentList: null,
         newListCounter: 0,
         isListNameEditActive: false,
@@ -221,14 +221,18 @@ function GlobalStoreContextProvider(props) {
         }
     }
 
-    store.updateViewing = async function(id){
+    store.updateViewing = async function (id) {
         let response = await api.getTop5ListById(id);
         if (response.data.success) {
             let list = response.data.top5List;
-            storeReducer({
-                type: GlobalStoreActionType.UPDATE_VIEWING_LIST,
-                payload: list.items
-            });
+            list.views = list.views + 1;
+            response = await api.updateTop5ListById(list._id, list);
+            if (response.data.success) {
+                storeReducer({
+                    type: GlobalStoreActionType.UPDATE_VIEWING_LIST,
+                    payload: list.items
+                });
+            }
         }
     }
 
@@ -252,7 +256,8 @@ function GlobalStoreContextProvider(props) {
             published: false,
             ownerEmail: auth.user.email,
             ownerName: auth.user.firstName + " " + auth.user.lastName,
-            views: 0
+            views: 0,
+            pubDate: new Date(-8640000000000000)
         };
         const response = await api.createTop5List(payload);
         if (response.data.success) {
@@ -283,6 +288,37 @@ function GlobalStoreContextProvider(props) {
                 }
             }
             // console.log(out);
+
+            storeReducer({
+                type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
+                payload: out
+            });
+        }
+        else {
+            console.log("API FAILED TO GET THE LIST PAIRS");
+        }
+    }
+
+    store.sortBy = function (sort) {
+        let out = store.idNamePairs.sort((a, b) => (a.pubDate > b.pubDate) ? 1 : ((b.pubDate > a.pubDate) ? -1 : 0))
+        storeReducer({
+            type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
+            payload: out
+        });
+
+    }
+
+    store.loadAllNamePairs = async function () {
+        const response = await api.getTop5ListPairs();
+        if (response.data.success) {
+            let pairsArray = response.data.idNamePairs;
+
+            let out = [];
+            for (let i = 0; i < pairsArray.length; i++) {
+                if (pairsArray[i].published) {
+                    out.push(pairsArray[i]);
+                }
+            }
 
             storeReducer({
                 type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
@@ -457,7 +493,7 @@ function GlobalStoreContextProvider(props) {
         store.updateCurrentList();
     }
 
-    store.changeList = async function(newName, listItems, pub) {
+    store.changeList = async function (newName, listItems, pub) {
         let response = await api.getTop5ListById(store.currentList._id);
         if (response.data.success) {
             let top5List = response.data.top5List;

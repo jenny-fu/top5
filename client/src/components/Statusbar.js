@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react'
-import AuthContext from '../auth'
+// import AuthContext from '../auth'
 import { GlobalStoreContext } from '../store'
-import { Fab, Typography, Button } from '@mui/material'
+import { Typography, Button } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
 
 /*
@@ -11,7 +11,7 @@ import AddIcon from '@mui/icons-material/Add';
 */
 function Statusbar() {
     const { store } = useContext(GlobalStoreContext);
-    const { auth } = useContext(AuthContext);
+    // const { auth } = useContext(AuthContext);
 
     useEffect(() => {
         store.loadIdNamePairs();
@@ -24,9 +24,9 @@ function Statusbar() {
     let disabled = false;
     if (store.isListEdit()) disabled = true;
 
-    let text = "";
-    if (store.currentList)
-        text = store.currentList.name;
+    // let text = "";
+    // if (store.currentList)
+    //     text = store.currentList.name;
 
     return (
         <div id="top5-statusbar">
