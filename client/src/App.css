@@ -196,6 +196,39 @@ body {
   float: left;
   color: black;
 }
+#list-top{
+  /* background-color: orange; */
+  position: absolute;
+  width: 100%;
+  top: 8%;
+}
+#list-bottom{
+  position: absolute;
+  /* background-color: beige; */
+  width: 100%;
+  top: 70%;
+  font-size: medium;
+}
+#list-right{
+  position: absolute;
+  /* background-color: red; */
+  width: 20%;
+  left: 78%;
+  top: 12%;
+}
+.list-right{
+  position: absolute;
+  /* background-color: pink; */
+  width: 18.5%;
+  left: 78%;
+  margin-top: -3%;
+  height: 76%;
+}
+.list-left{
+  /* position: absolute; */
+  /* background-color: purple; */
+  width: 45%;
+}
 
 #list-selector-list {
   position: absolute;
@@ -256,6 +289,9 @@ body {
 .list-card-button {
   float: right;
   transform: scale(2);
+}
+#list-owner{
+  font-size: medium;
 }
 
 iframe

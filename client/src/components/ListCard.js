@@ -9,6 +9,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined';
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
+import { Link } from 'react-router-dom'
 
 import * as React from 'react';
 import Button from '@mui/material/Button';
@@ -87,7 +88,6 @@ function ListCard(props) {
     // function handleUpdateText(event) {
     //     setText(event.target.value);
     // }
-    let background='beige';
 
     let cardElement =
         <ListItem
@@ -97,48 +97,123 @@ function ListCard(props) {
             style={{
                 fontSize: '20pt',
                 width: '100%',
-                backgroundColor: background,
+                backgroundColor: 'beige',
                 marginBottom:'1%',
                 borderRadius:'10px',
                 border:'solid 1px',
-            }}
-        >
-        {/* <Box id='list-top' sx={{flexGrow: 1, width:'100%'}}> */}
-            <Box sx={{ p: 1, flexGrow: 1 }}
-                // onClick={(event) => {
-                //     handleLoadList(event, idNamePair._id)
-                // }
-                // }
-                >{idNamePair.name}
-            </Box>
-
-            <Box>
-                <IconButton>
-                    <ThumbUpOutlinedIcon style={{ fontSize: '20pt' }} />
-                </IconButton>
-            </Box>
-            <Box>
-                <IconButton>
-                    <ThumbDownOutlinedIcon style={{ fontSize: '20pt' }} />
-                </IconButton>
-            </Box>
-            
-            <Box>
-                <IconButton onClick={(event) => {
-                    handleDeleteList(event, idNamePair._id)
-                }} aria-label='delete'>
-                    <DeleteOutlineOutlinedIcon style={{ fontSize: '20pt' }} />
-                </IconButton>
-            </Box>
-        {/* </Box>
-        <Box id='list-bottom' sx={{flexGrow: 1, width:'100%'}}> */}
-            <Box>
-                <IconButton>
-                    <ArrowDropDownIcon style={{ fontSize: '20pt' }} />
-                </IconButton>
-            </Box>
-        {/* </Box> */}
+                height:'90px',
+                // position:'absolute'
+            }}>
+            <div id='list-top'>
+                <div className="list-left">
+                    <Box
+                        >{idNamePair.name}
+                        <div id='list-owner'>By: <Link style={{color:'blue'}}>{idNamePair.ownerName}</Link> </div>
+                    </Box>
+                </div>
+                <div id="list-right" style={{ display:'inline' }}>
+                    <Box style={{ display:'inline', padding:'8px'}}>
+                        <IconButton>
+                            <ThumbUpOutlinedIcon style={{ fontSize: '20pt', color:'black' }} />
+                        </IconButton>
+                        <span>0</span>
+                    </Box>
+                    <Box style={{ display:'inline', padding:'8px' }}>
+                        <IconButton>
+                            <ThumbDownOutlinedIcon style={{ fontSize: '20pt', color:'black' }} />
+                        </IconButton>
+                        <span>0</span>
+                    </Box>
+                    
+                    <Box style={{ display:'inline', padding:'8px', float:'right', marginTop: '-4%' }}
+                     onClick={(event) => {
+                        handleDeleteList(event, idNamePair._id)
+                    }} aria-label='delete'>
+                        <IconButton>
+                            <DeleteOutlineOutlinedIcon style={{ fontSize: '20pt', color:'black' }} />
+                        </IconButton>
+                    </Box>
+                </div>
+            </div>
+            <div id='list-bottom'>
+                <div className='list-left'>
+                    <Box style={{color:'red', textDecoration:'underline', cursor:'pointer'}} 
+                        onClick={(event) => {
+                            handleLoadList(event, idNamePair._id)
+                        }}> Edit </Box>
+                </div>
+                <div className="list-right" style={{ display:'inline', padding:'8px'}}>
+                    <span>Views: 0</span>
+                    <Box style={{ display:'inline', marginTop: '-8%', float:'right'}}>
+                        <IconButton>
+                            <ArrowDropDownIcon style={{ fontSize: '20pt', color:'black' }} />
+                        </IconButton>
+                    </Box>
+                </div>
+            </div>
         </ListItem>
+
+    if(idNamePair.published){
+        cardElement = <ListItem
+            id={idNamePair._id}
+            key={idNamePair._id}
+            sx={{display: 'flex', p: 1 }}
+            style={{
+                fontSize: '20pt',
+                width: '100%',
+                backgroundColor: 'lavender',
+                marginBottom:'1%',
+                borderRadius:'10px',
+                border:'solid 1px',
+                height:'90px',
+                // position:'absolute'
+            }}>
+            <div id='list-top'>
+                <div className="list-left">
+                    <Box
+                        >{idNamePair.name}
+                        <div id='list-owner'>By: <Link style={{color:'blue'}}>{idNamePair.ownerName}</Link> </div>
+                    </Box>
+                </div>
+                <div id="list-right" style={{ display:'inline' }}>
+                    <Box style={{ display:'inline', padding:'8px'}}>
+                        <IconButton>
+                            <ThumbUpOutlinedIcon style={{ fontSize: '20pt', color:'black' }} />
+                        </IconButton>
+                        <span>0</span>
+                    </Box>
+                    <Box style={{ display:'inline', padding:'8px' }}>
+                        <IconButton>
+                            <ThumbDownOutlinedIcon style={{ fontSize: '20pt', color:'black' }} />
+                        </IconButton>
+                        <span>0</span>
+                    </Box>
+                    
+                    <Box style={{ display:'inline', padding:'8px', float:'right', marginTop: '-4%' }}
+                     onClick={(event) => {
+                        handleDeleteList(event, idNamePair._id)
+                    }} aria-label='delete'>
+                        <IconButton>
+                            <DeleteOutlineOutlinedIcon style={{ fontSize: '20pt', color:'black' }} />
+                        </IconButton>
+                    </Box>
+                </div>
+            </div>
+            <div id='list-bottom'>
+                <div className='list-left'>
+                    Published: <span style={{color: 'green'}}>{idNamePair.pubDate}</span>
+                </div>
+                <div className="list-right" style={{ display:'inline', padding:'8px'}}>
+                    <span>Views: 0</span>
+                    <Box style={{ display:'inline', marginTop: '-8%', float:'right'}}>
+                        <IconButton>
+                            <ArrowDropDownIcon style={{ fontSize: '20pt', color:'black' }} />
+                        </IconButton>
+                    </Box>
+                </div>
+            </div>
+        </ListItem>
+    }
 
     // if (editActive) {
     //     cardElement =

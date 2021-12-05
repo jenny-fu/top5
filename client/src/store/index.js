@@ -217,7 +217,8 @@ function GlobalStoreContextProvider(props) {
             name: newListName,
             items: ["", "", "", "", ""],
             published: false,
-            ownerEmail: auth.user.email
+            ownerEmail: auth.user.email,
+            ownerName: auth.user.firstName + " " + auth.user.lastName
         };
         const response = await api.createTop5List(payload);
         if (response.data.success) {
@@ -422,12 +423,13 @@ function GlobalStoreContextProvider(props) {
         store.updateCurrentList();
     }
 
-    store.changeList = async function(newName, listItems) {
+    store.changeList = async function(newName, listItems, pub) {
         let response = await api.getTop5ListById(store.currentList._id);
         if (response.data.success) {
             let top5List = response.data.top5List;
             top5List.name = newName;
             top5List.items = listItems;
+            top5List.published = pub;
             async function updateList(top5List) {
                 response = await api.updateTop5ListById(top5List._id, top5List);
                 if (response.data.success) {

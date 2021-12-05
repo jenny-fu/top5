@@ -24,7 +24,7 @@ function Top5Item(props) {
     return (
         <ListItem
             id={'item-' + (index + 1)}
-            key={props.key}
+            // key={props.key}
             sx={{ display: 'flex'}}
             style={{
                 height: '20%',

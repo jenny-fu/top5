@@ -17,9 +17,15 @@ function WorkspaceScreen() {
     const { store } = useContext(GlobalStoreContext);
     const [title, setTitle] = useState(store.currentList.name);
     let listItems = store.currentList.items;
+    let disabled = false;
+    let name = "";
+    let style={color:'black', backgroundColor:'lightgrey', border:'solid 1px', borderRadius: '10px'};
 
     function updateList(){
-        store.changeList(title, listItems);
+        store.changeList(title, listItems, false);
+    }
+    function publishList(){
+        store.changeList(title, listItems, true);
     }
     function handleSetTitle(e){
         setTitle(e.target.value);
@@ -27,6 +33,15 @@ function WorkspaceScreen() {
     function updateItems(index, value){
         listItems[index] = value;
     }
+    //check when list loads
+        // for(let i = 0; i < 5; i++){
+        //     if(listItems[i] === ""){
+        //         disabled = true;
+        //         name = "disabled";
+        //         style = {};
+        //         break;
+        //     }
+        // }
 
     let editItems = "";
     if (store.currentList) {
@@ -90,10 +105,10 @@ function WorkspaceScreen() {
             </div>
             <div id='edit-buttons'>
                 <Button style={{color:'black', backgroundColor:'lightgrey', border:'solid 1px', borderRadius: '10px', marginRight:'20px'}} 
-                    onClick={updateList} >
+                    onClick={updateList}>
                     Save
                 </Button>
-                <Button style={{color:'black', backgroundColor:'lightgrey', border:'solid 1px', borderRadius: '10px'}}>
+                <Button style={style} disabled={disabled} className={name} onClick={publishList}>
                     Publish 
                 </Button>
             </div>
