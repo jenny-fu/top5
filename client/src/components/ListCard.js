@@ -50,7 +50,24 @@ function ListCard(props) {
     // const [editActive, setEditActive] = useState(false);
     // const [text, setText] = useState("");
     const { idNamePair } = props;
-    const [expand, setExpand] = React.useState(<div></div>);
+    const [expand, setExpand] = React.useState(<div>
+
+        <div id='list-bottom'>
+            <div className='list-left'>
+                <Box style={{ color: 'red', textDecoration: 'underline', cursor: 'pointer' }}
+                    onClick={(event) => {
+                        handleLoadList(event, idNamePair._id)
+                    }}> Edit </Box>
+            </div>
+            <div className="list-right" style={{ display: 'inline', padding: '8px' }}>
+                <Box style={{ display: 'inline', marginTop: '-8%', float: 'right' }}>
+                    <IconButton onClick={(event) => { handleExpandView(event, idNamePair._id) }}>
+                        <ArrowDropDownIcon style={{ fontSize: '20pt', color: 'black' }} />
+                    </IconButton>
+                </Box>
+            </div>
+        </div>
+    </div>);
 
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
@@ -62,7 +79,16 @@ function ListCard(props) {
             store.setCurrentList(id);
         }
     }
-    function handleExpand() {
+
+    function handleExpandView(event, id) {
+        event.stopPropagation();
+        store.updateViewing(id);
+        handleExpand(event);
+    }
+    function handleExpand(event) {
+        event.stopPropagation();
+        let list = store.viewingList;
+        // console.log(list)
         listStyle = {
             fontSize: '20pt',
             width: '100%',
@@ -72,10 +98,10 @@ function ListCard(props) {
             border: 'solid 1px',
             height: 'fit-content',
         }
-        setExpand(<List style={{ marginTop: '5%', marginBottom: '3%', width: '100%' }}>
+        setExpand(<div style={{ marginTop: '5%', marginBottom: '3%', width: '100%' }}><List>
             <Box className='view-left'>
                 <ListItem>
-                    1. 
+                    1.
                 </ListItem>
                 <ListItem>
                     2.
@@ -93,8 +119,51 @@ function ListCard(props) {
             <Box className='view-right'>
 
             </Box>
-        </List>);
+        </List>
+            <div id='list-bottom'>
+                <div className='list-left'>
+                    <Box style={{ color: 'red', textDecoration: 'underline', cursor: 'pointer' }}
+                        onClick={(event) => {
+                            handleLoadList(event, idNamePair._id)
+                        }}> Edit </Box>
+                </div>
+                <div className="list-right" style={{ display: 'inline', padding: '8px' }}>
+                    <Box style={{ display: 'inline', marginTop: '-8%', float: 'right' }}>
+                        <IconButton onClick={closeView}>
+                            <ArrowDropUpIcon style={{ fontSize: '20pt', color: 'black' }} />
+                        </IconButton>
+                    </Box>
+                </div>
+            </div></div>);
 
+    }
+    function closeView() {
+        listStyle = {
+            fontSize: '20pt',
+            width: '100%',
+            backgroundColor: 'beige',
+            marginBottom: '1%',
+            borderRadius: '10px',
+            border: 'solid 1px',
+            height: '90px'
+        }
+        setExpand(<div>
+            <div id='list-bottom'>
+                <div className='list-left'>
+                    <Box style={{ color: 'red', textDecoration: 'underline', cursor: 'pointer' }}
+                        onClick={(event) => {
+                            handleLoadList(event, idNamePair._id)
+                        }}> Edit </Box>
+                </div>
+                <div className="list-right" style={{ display: 'inline', padding: '8px' }}>
+                    <Box style={{ display: 'inline', marginTop: '-8%', float: 'right' }}>
+                        <IconButton onClick={(event) => { handleExpandView(event, idNamePair._id) }}>
+                            <ArrowDropDownIcon style={{ fontSize: '20pt', color: 'black' }} />
+                        </IconButton>
+                    </Box>
+                </div>
+            </div>
+        </div>);
     }
 
     async function handleDeleteList(event, id) {
@@ -159,21 +228,6 @@ function ListCard(props) {
 
             {expand}
 
-            <div id='list-bottom'>
-                <div className='list-left'>
-                    <Box style={{ color: 'red', textDecoration: 'underline', cursor: 'pointer' }}
-                        onClick={(event) => {
-                            handleLoadList(event, idNamePair._id)
-                        }}> Edit </Box>
-                </div>
-                <div className="list-right" style={{ display: 'inline', padding: '8px' }}>
-                    <Box style={{ display: 'inline', marginTop: '-8%', float: 'right' }}>
-                        <IconButton onClick={handleExpand}>
-                            <ArrowDropDownIcon style={{ fontSize: '20pt', color: 'black' }} />
-                        </IconButton>
-                    </Box>
-                </div>
-            </div>
         </ListItem>
 
     if (idNamePair.published) {

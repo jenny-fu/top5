@@ -7,7 +7,7 @@ import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 import FunctionsOutlinedIcon from '@mui/icons-material/FunctionsOutlined';
 import SortOutlinedIcon from '@mui/icons-material/SortOutlined';
 import TextField from '@mui/material/TextField';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
 /*
     This toolbar is a functional React component that
@@ -17,44 +17,32 @@ import { Link } from 'react-router-dom'
 */
 function EditToolbar() {
     const { store } = useContext(GlobalStoreContext);
+    let name = '';
+    let disabled = false;
+    let searchDisabled = '';
+    if(store.currentList){
+        disabled = true;
+        name = 'disabled';
+        searchDisabled = 'search-disable';
+    }
 
-    function handleUndo() {
-        store.undo();
-    }
-    function handleRedo() {
-        store.redo();
-    }
-    function handleClose() {
-        store.closeCurrentList();
-    }
-    
-    let disabledRedo = true;
-    let disabledUndo = true;
-    let disabled = true;
-
-    if(store.currentList && store.canUndo()) disabledUndo = false;
-    if(store.currentList && store.canRedo()) disabledRedo = false;
-    if(store.currentList) {disabled = false;}
-    
-    if(store.isItemEdit()) {disabledUndo = true; disabledRedo = true; disabled = true;}
-    
     return (
         <div id="edit-toolbar">
-            <Button>
+            <Button disabled={disabled}>
                 <Link to='/'>
-                    <HomeOutlinedIcon style={{height: '40px', width : '50px', color:'black'}}/>
+                    <HomeOutlinedIcon className={name} style={{height: '40px', width : '50px', color:'black'}}/>
                 </Link>
             </Button>
-            <Button>
-                <GroupsOutlinedIcon style={{height: '40px', width : '50px', color:'black'}}/>
+            <Button disabled={disabled}>
+                <GroupsOutlinedIcon className={name} style={{height: '40px', width : '50px', color:'black'}}/>
             </Button>
-            <Button>
-                <PersonOutlinedIcon style={{height: '40px', width : '50px', color:'black'}}/>
+            <Button disabled={disabled}>
+                <PersonOutlinedIcon className={name} style={{height: '40px', width : '50px', color:'black'}}/>
             </Button>
-            <Button>
-                <FunctionsOutlinedIcon style={{height: '40px', width : '50px', color:'black'}}/>
+            <Button disabled={disabled}>
+                <FunctionsOutlinedIcon className={name} style={{height: '40px', width : '50px', color:'black'}}/>
             </Button>
-            <TextField
+            <TextField  className={searchDisabled}
                 style={{width : '500px', marginRight: '19%', marginTop:'1%', backgroundColor:'white', borderRadius:'4px'}}
                 inputProps={{ style: { height: "10px", fontSize:'15px' }}}
                 // margin="normal"
@@ -62,14 +50,12 @@ function EditToolbar() {
                 id="search"
                 label="Search"
                 name="search"
-                autoComplete="search"
-                // autoFocus
-            />
-            <Button style={{height: '40px', width : '100px', color:'black'}}>
+                autoComplete="search" />
+            <Button className={name} style={{height: '40px', width : '100px', color:'black'}} disabled={disabled}>
                 Sort By
             </Button>
-            <Button>
-                <SortOutlinedIcon style={{height: '45px', width : '50px', color:'black'}}/>
+            <Button disabled={disabled}>
+                <SortOutlinedIcon className={name} style={{height: '45px', width : '50px', color:'black'}}/>
             </Button>
         </div>
     )

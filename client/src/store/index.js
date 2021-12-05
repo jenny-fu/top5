@@ -26,7 +26,8 @@ export const GlobalStoreActionType = {
     UNMARK_LIST_FOR_DELETION: "UNMARK_LIST_FOR_DELETION",
     SET_CURRENT_LIST: "SET_CURRENT_LIST",
     SET_ITEM_EDIT_ACTIVE: "SET_ITEM_EDIT_ACTIVE",
-    SET_LIST_NAME_EDIT_ACTIVE: "SET_LIST_NAME_EDIT_ACTIVE"
+    SET_LIST_NAME_EDIT_ACTIVE: "SET_LIST_NAME_EDIT_ACTIVE",
+    UPDATE_VIEWING_LIST: "UPDATE_VIEWING_LIST"
 }
 
 // WE'LL NEED THIS TO PROCESS TRANSACTIONS
@@ -43,7 +44,7 @@ function GlobalStoreContextProvider(props) {
         isListNameEditActive: false,
         isItemEditActive: false,
         listMarkedForDeletion: null,
-        viewingList: null
+        viewingList: []
     });
     const history = useHistory();
 
@@ -226,7 +227,7 @@ function GlobalStoreContextProvider(props) {
             let list = response.data.top5List;
             storeReducer({
                 type: GlobalStoreActionType.UPDATE_VIEWING_LIST,
-                payload: list
+                payload: list.items
             });
         }
     }

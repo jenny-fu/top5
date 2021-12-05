@@ -234,11 +234,11 @@ body {
   background-color: var(--swatch-status);
   border: solid black 1px;
   border-radius: 10px;
-  width: 40%;
+  width: 50%;
   color: goldenrod;
 }
 .view-right{
-  background-color: red;
+  /* background-color: red; */
   width: 40%;
 }
 
@@ -382,9 +382,14 @@ input {
 }
 
 .disabled {
-  color: grey;
+  color: grey!important;
   pointer-events: none;
 }
+.search-disable{
+  opacity: 30%;
+  pointer-events: none;
+}
+
 /* THIS STYLE SHEET MANAGES STYLE FOR OUR MODAL, i.e. DIALOG BOX */
 
 .modal {

@@ -1,7 +1,6 @@
 import { React, useContext, useState } from "react";
 import { GlobalStoreContext } from '../store'
 import TextField from '@mui/material/TextField';
-import Box from '@mui/material/Box';
 import ListItem from '@mui/material/ListItem';
 /*
     This React component represents a single item in our

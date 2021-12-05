@@ -136,7 +136,7 @@ function WorkspaceScreen() {
 
     return (
         <div>
-            <EditToolbar />
+            <EditToolbar/>
             <div id="top5-workspace">
                 <TextField
                     value={title}
@@ -167,7 +167,6 @@ function WorkspaceScreen() {
                         color="primary"
                         aria-label="add"
                         id="add-list-button"
-                    // disabled={disabled}
                     >
                         <AddIcon style={{color:'grey'}} />
                     </Button>
