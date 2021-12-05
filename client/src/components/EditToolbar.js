@@ -7,6 +7,7 @@ import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 import FunctionsOutlinedIcon from '@mui/icons-material/FunctionsOutlined';
 import SortOutlinedIcon from '@mui/icons-material/SortOutlined';
 import TextField from '@mui/material/TextField';
+import { Link } from 'react-router-dom'
 
 /*
     This toolbar is a functional React component that
@@ -40,7 +41,9 @@ function EditToolbar() {
     return (
         <div id="edit-toolbar">
             <Button>
-                <HomeOutlinedIcon style={{height: '40px', width : '50px', color:'black'}}/>
+                <Link to='/'>
+                    <HomeOutlinedIcon style={{height: '40px', width : '50px', color:'black'}}/>
+                </Link>
             </Button>
             <Button>
                 <GroupsOutlinedIcon style={{height: '40px', width : '50px', color:'black'}}/>

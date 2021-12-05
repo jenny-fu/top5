@@ -34,6 +34,7 @@ function WorkspaceScreen() {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const [error, setError] = useState("");
 
     let listItems = store.currentList.items;
     let disabled = false;
@@ -41,10 +42,31 @@ function WorkspaceScreen() {
     let style={color:'black', backgroundColor:'lightgrey', border:'solid 1px', borderRadius: '10px'};
 
     function updateList(){
-        if(title === '') handleOpen();
+        let sameName = false;
+        for(let i = 0; i < (store.idNamePairs).length; i++){
+            if(store.idNamePairs[i]._id !== store.currentList._id && store.idNamePairs[i].name === title){
+                sameName = true;
+                break;
+            }
+        }
+
+        if(title === ''){
+            setError("Title is missing!");
+            handleOpen();
+        }else if(sameName){
+            setError("List with this title already exists!");
+            handleOpen();
+        }
         else store.changeList(title, listItems, false);
     }
     function publishList(){
+        let sameName = false;
+        for(let j = 0; j < (store.idNamePairs).length; j++){
+            if(store.idNamePairs[j]._id !== store.currentList._id && store.idNamePairs[j].name === title){
+                sameName = true;
+                break;
+            }
+        }
         let pub = true;
         for(let i = 0; i < 5; i++){
             if(listItems[i] === ""){
@@ -52,7 +74,16 @@ function WorkspaceScreen() {
             }
         }
 
-        if(title === '' || !pub) handleOpen();
+        if(title === ''){
+            setError("Title is missing!");
+            handleOpen();
+        }else if(sameName){
+            setError("List with this title already exists!");
+            handleOpen();
+        }else if(!pub){
+            setError("Item information is missing!");
+            handleOpen();
+        }
         else store.changeList(title, listItems, true);
     }
     function handleSetTitle(e){
@@ -97,7 +128,7 @@ function WorkspaceScreen() {
             aria-describedby="modal-modal-description">
             <Box sx={modalStyle} style={{textAlign:'center'}}>
                 <Typography id="modal-modal-title" variant="h5" component="h2">
-                    Title/item information is missing!
+                    {error}
                 </Typography>
                 <Button variant="outlined" onClick={handleClose}>Confirm</Button>
             </Box>
@@ -113,7 +144,6 @@ function WorkspaceScreen() {
                     inputProps={{ style: { height: "10px", fontSize: '15px'} }}
                     required
                     id="title"
-                    // label="Title"
                     name="title"
                     autoComplete="Title"
                     autoFocus

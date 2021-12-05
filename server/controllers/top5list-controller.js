@@ -138,7 +138,8 @@ getTop5ListPairs = async (req, res) => {
                     owner: list.ownerEmail,
                     ownerName: list.ownerName,
                     published: list.published,
-                    pubDate: list.pubDate
+                    pubDate: list.pubDate,
+                    views: list.views
                 };
                 pairs.push(pair);
             // }

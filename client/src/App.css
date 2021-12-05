@@ -200,13 +200,14 @@ body {
   /* background-color: orange; */
   position: absolute;
   width: 100%;
-  top: 8%;
+  top: 1%;
 }
 #list-bottom{
   position: absolute;
   /* background-color: beige; */
   width: 100%;
-  top: 70%;
+  /* top: 70%; */
+  bottom: 3%;
   font-size: medium;
 }
 #list-right{
@@ -228,6 +229,17 @@ body {
   /* position: absolute; */
   /* background-color: purple; */
   width: 45%;
+}
+.view-left{
+  background-color: var(--swatch-status);
+  border: solid black 1px;
+  border-radius: 10px;
+  width: 40%;
+  color: goldenrod;
+}
+.view-right{
+  background-color: red;
+  width: 40%;
 }
 
 #list-selector-list {

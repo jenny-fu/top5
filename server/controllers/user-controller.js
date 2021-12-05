@@ -101,7 +101,7 @@ loginUser = async (req, res) => {
                     success: false, errorMessage: "Incorrect email/password has been entered."
                 });
         }
-        const valid = bcrypt.compare(password, savedUser.passwordHash);
+        const valid = await bcrypt.compare(password, savedUser.passwordHash);
         if (!valid) {
             return res
                 .status(200)
