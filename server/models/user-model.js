@@ -7,7 +7,8 @@ const UserSchema = new Schema(
         firstName: { type: String, required: true },
         lastName: { type: String, required: true },
         email: { type: String, required: true },
-        passwordHash: { type: String, required: true }
+        passwordHash: { type: String, required: true },
+        likedLists: {type: [ObjectId], required: true}
     },
     { timestamps: true },
 )

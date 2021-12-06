@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react'
 // import AuthContext from '../auth'
 import { GlobalStoreContext } from '../store'
 import AllCard from './AllCard.js'
+import Statusbar from './Statusbar.js'
 import EditToolbar from './EditToolbar.js'
 import List from '@mui/material/List';
 /*
@@ -40,6 +41,7 @@ const UserScreen = () => {
                     listCard
                 }
             </div>
+            <Statusbar/>
         </div>)
 }
 

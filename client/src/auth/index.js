@@ -11,6 +11,7 @@ export const AuthActionType = {
     REGISTER_USER: "REGISTER_USER",
     LOGIN_USER: "LOGIN_USER",
     LOGOUT_USER: "LOGOUT_USER",
+    GUEST_USER: "GUEST_USER",
     ERROR_MSG: "ERROR_MSG"
 }
 
@@ -18,7 +19,8 @@ function AuthContextProvider(props) {
     const [auth, setAuth] = useState({
         user: null,
         loggedIn: false,
-        error: null
+        error: null,
+        guestLogin: false
     });
     const history = useHistory();
 
@@ -33,35 +35,48 @@ function AuthContextProvider(props) {
                 return setAuth({
                     user: payload.user,
                     loggedIn: payload.loggedIn,
-                    error: null
+                    error: null,
+                    guestLogin: false
                 });
             }
             case AuthActionType.ERROR_MSG: {
                 return setAuth({
                     user: null,
                     loggedIn: false,
-                    error: payload.msg
+                    error: payload.msg,
+                    guestLogin: false
                 });
             }
             case AuthActionType.REGISTER_USER: {
                 return setAuth({
                     user: payload.user,
                     loggedIn: true,
-                    error: null
+                    error: null,
+                    guestLogin: false
                 });
             }
             case AuthActionType.LOGIN_USER: {
                 return setAuth({
                     user: payload.user,
                     loggedIn: true,
-                    error: null
+                    error: null,
+                    guestLogin: false
                 });
             }
             case AuthActionType.LOGOUT_USER: {
                 return setAuth({
                     user: null,
                     loggedIn: false,
-                    error: null
+                    error: null,
+                    guestLogin: false
+                });
+            }
+            case AuthActionType.GUEST_USER: {
+                return setAuth({
+                    user: null,
+                    loggedIn: false,
+                    error: null,
+                    guestLogin: true
                 });
             }
             default:
@@ -102,29 +117,8 @@ function AuthContextProvider(props) {
                 })
                 history.push("/");
                 store.loadIdNamePairs();
-
-                // let out = [];
-                // let pairsArray = store.getidNamePairs();
-                // console.log("PAIRS ARRAY = "+ pairsArray)
-                // for(let i = 0; i < pairsArray.length; i++){
-                //     if(pairsArray[i].owner === response.data.user.email){
-                //         out.push(pairsArray[i]);
-                //     }
-                // }
-                // console.log(out);
-                // store.setPairs(out);
-
             }
         }
-        // else{
-        //     console.log(response.data.errorMessage);
-        //     authReducer({
-        //         type: AuthActionType.ERROR_MSG,
-        //         payload: {
-        //             msg: response.data.errorMessage
-        //         }
-        //     })
-        // }
     }
 
     auth.loginUser = async function (userData, store) {
@@ -146,19 +140,16 @@ function AuthContextProvider(props) {
                 })
                 history.push("/");
                 store.loadIdNamePairs();
-
-                // let out = [];
-                // let pairsArray = store.getidNamePairs;
-                // console.log("PAIRS ARRAY = "+ pairsArray)
-                // for(let i = 0; i < pairsArray.length; i++){
-                //     if(pairsArray[i].owner === response.data.user.email){
-                //         out.push(pairsArray[i]);
-                //     }
-                // }
-                // console.log(out);
-                // store.setPairs(out);
             }
         }
+    }
+
+    auth.loginGuest = function (store) {
+        authReducer({ type: AuthActionType.GUEST_USER })
+        history.push("/allLists"); //should be sent to community..
+        // store.setOption('all');
+        store.setOption('all'); //doesnt set
+        store.loadAllNamePairs();
     }
 
     auth.logoutUser = async function (store) {

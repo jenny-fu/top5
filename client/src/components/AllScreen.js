@@ -1,7 +1,8 @@
 import React, { useContext, useEffect } from 'react'
-// import AuthContext from '../auth'
+import AuthContext from '../auth'
 import { GlobalStoreContext } from '../store'
 import AllCard from './AllCard.js'
+import Statusbar from './Statusbar.js';
 import EditToolbar from './EditToolbar.js'
 import List from '@mui/material/List';
 /*
@@ -11,7 +12,7 @@ import List from '@mui/material/List';
 */
 const AllScreen = () => {
     const { store } = useContext(GlobalStoreContext);
-    // const { auth } = useContext(AuthContext);
+    const { auth } = useContext(AuthContext);
 
     useEffect(() => {
         store.loadAllNamePairs();
@@ -25,7 +26,6 @@ const AllScreen = () => {
     // if (store.isListEdit()) disabled = true;
 
     let listCard = "";
-
     if (store) {
         listCard =
             <List sx={{ width: '90%', left: '5%' }}>
@@ -48,6 +48,7 @@ const AllScreen = () => {
                     listCard
                 }
             </div>
+            <Statusbar/>
         </div>)
 }
 

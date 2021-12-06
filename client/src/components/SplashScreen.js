@@ -1,10 +1,19 @@
+import { useContext } from 'react';
+import AuthContext from '../auth'
 import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
 import SortIcon from '@mui/icons-material/Sort';
 import ConnectWithoutContactIcon from '@mui/icons-material/ConnectWithoutContact';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom'
+import Box from '@mui/material/Box';
 
 export default function SplashScreen() {
+    const { auth } = useContext(AuthContext);
+
+    function handleGuestLogin(){
+        auth.loginGuest();
+    }
+
     return (
         <div id="splash-screen">
             <div id='title'>Welcome to The Top 5 Lister!</div>
@@ -26,9 +35,9 @@ export default function SplashScreen() {
                 <Button id='create-button' ><Link to='/register/'> Create Account </Link> </Button>
             </div>
             <div id='guest-box'>
-                <Link id='guest-button'>
+                <Box id='guest-button' onClick={handleGuestLogin}>
                     or continue as guest...
-                </Link>
+                </Box>
             </div>
         </div>
     )

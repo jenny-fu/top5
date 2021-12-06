@@ -115,8 +115,7 @@ export default function AppBanner() {
                             aria-controls={menuId}
                             aria-haspopup="true"
                             onClick={handleProfileMenuOpen}
-                            color="inherit"
-                        >
+                            color="inherit" >
                             { getAccountMenu(auth.loggedIn) }
                         </IconButton>
                     </Box>

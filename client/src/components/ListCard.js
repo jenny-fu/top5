@@ -9,6 +9,8 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined';
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
+import ThumbDownIcon from '@mui/icons-material/ThumbDown';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import { Link } from 'react-router-dom';
 
 import * as React from 'react';
@@ -92,17 +94,79 @@ function ListCard(props) {
         </div>
     </div>);
 
+    const [dislikeBox, setDislike] = useState(
+        <Box style={{ display: 'inline', padding: '8px' }}>
+            <IconButton onClick={(event) => { handleDislike(event, idNamePair._id) }}>
+                <ThumbDownOutlinedIcon style={{ fontSize: '20pt', color: 'black' }} />
+            </IconButton>
+            <span>{idNamePair.dislikes}</span>
+        </Box>);
+
+    const [likeBox, setLike] = useState(
+        <Box style={{ display: 'inline', padding: '8px' }}>
+            <IconButton onClick={(event) => { handleLike(event, idNamePair._id) }}>
+                <ThumbUpOutlinedIcon style={{ fontSize: '20pt', color: 'black' }} />
+            </IconButton>
+            <span>{idNamePair.likes}</span>
+        </Box>);
+
     const [open, setOpen] = useState(false);
+    const [liked, toggleLike] = useState(false);
+    const [disliked, toggleDislike] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
     function handleLoadList(event, id) {
         closeView();
-        if (!event.target.disabled) {
-            // CHANGE THE CURRENT LIST
-            store.setCurrentList(id);
-        }
+        closeViewPub()
+        store.setCurrentList(id);
     }
+
+    function handleDislike(event, id) {
+        let box = <Box></Box>;
+        if(!disliked){
+        box = <Box style={{ display: 'inline', padding: '8px' }}>
+            <IconButton onClick={(event) => { handleDislike(event, idNamePair._id) }}>
+                <ThumbDownIcon style={{ fontSize: '20pt', color: 'black' }} />
+            </IconButton>
+            <span>{idNamePair.dislikes}</span>
+        </Box>
+        }else{
+            box = <Box style={{ display: 'inline', padding: '8px' }}>
+            <IconButton onClick={(event) => { handleDislike(event, idNamePair._id) }}>
+                <ThumbDownOutlinedIcon style={{ fontSize: '20pt', color: 'black' }} />
+            </IconButton>
+            <span>{idNamePair.dislikes}</span>
+        </Box>
+        }
+        event.stopPropagation();
+        store.dislike(id);
+        toggleDislike(!disliked);
+        setDislike(box)
+    }
+    function handleLike(event, id) {
+        let box = <Box></Box>;
+        if(!liked){
+            box = <Box style={{ display: 'inline', padding: '8px' }}>
+            <IconButton onClick={(event) => { handleLike(event, idNamePair._id) }}>
+                <ThumbUpIcon style={{ fontSize: '20pt', color: 'black' }} />
+            </IconButton>
+            <span>{idNamePair.likes}</span>
+        </Box>
+        }else{
+            box = <Box style={{ display: 'inline', padding: '8px' }}>
+            <IconButton onClick={(event) => { handleLike(event, idNamePair._id) }}>
+                <ThumbUpOutlinedIcon style={{ fontSize: '20pt', color: 'black' }} />
+            </IconButton>
+            <span>{idNamePair.likes}</span>
+        </Box>
+        }
+        event.stopPropagation();
+        store.like(id);
+        toggleLike(!liked);
+        setLike(box);
+    }
+
     ////////////////////////////////////////////////EDIT CARD////////////////////////////////////////////
     function handleExpandView(event, id) {
         event.stopPropagation();
@@ -111,7 +175,7 @@ function ListCard(props) {
     }
     function handleExpand(event) {
         event.stopPropagation();
-        let list = store.viewingList;
+        let list = store.viewingList; //null???
         // console.log(list)
         listStyle = {
             fontSize: '20pt',
@@ -125,7 +189,7 @@ function ListCard(props) {
         setExpand(<div style={{ marginTop: '5%', marginBottom: '3%', width: '100%' }}><List>
             <Box className='view-left'>
                 <ListItem>
-                    1.
+                    1. 
                 </ListItem>
                 <ListItem>
                     2.
@@ -339,18 +403,8 @@ function ListCard(props) {
                     </Box>
                 </div>
                 <div id="list-right" style={{ display: 'inline' }}>
-                    <Box style={{ display: 'inline', padding: '8px' }}>
-                        <IconButton>
-                            <ThumbUpOutlinedIcon style={{ fontSize: '20pt', color: 'black' }} />
-                        </IconButton>
-                        <span>0</span>
-                    </Box>
-                    <Box style={{ display: 'inline', padding: '8px' }}>
-                        <IconButton>
-                            <ThumbDownOutlinedIcon style={{ fontSize: '20pt', color: 'black' }} />
-                        </IconButton>
-                        <span>0</span>
-                    </Box>
+                    {likeBox}
+                    {dislikeBox}
                     <Box style={{ display: 'inline', padding: '8px', float: 'right', marginTop: '-4%' }}
                         onClick={(event) => {
                             handleDeleteList(event, idNamePair._id)

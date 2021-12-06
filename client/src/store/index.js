@@ -31,7 +31,8 @@ export const GlobalStoreActionType = {
     SET_HOME: "SET_HOME",
     SET_ALL: "SET_ALL",
     SET_USER: "SET_USER",
-    SET_COMMUNITY: "SET_COMMUNITY"
+    SET_COMMUNITY: "SET_COMMUNITY",
+    SET_SEARCH: "SET_SEARCH"
 }
 
 // WE'LL NEED THIS TO PROCESS TRANSACTIONS
@@ -52,7 +53,8 @@ function GlobalStoreContextProvider(props) {
         home: true,
         all: false,
         user: false,
-        community: false
+        community: false,
+        search: ''
     });
     const history = useHistory();
 
@@ -77,7 +79,8 @@ function GlobalStoreContextProvider(props) {
                     home: store.home,
                     all: store.all,
                     user: store.user,
-                    community: store.community
+                    community: store.community,
+                    search: store.search
                 });
             }
             // STOP EDITING THE CURRENT LIST
@@ -93,7 +96,8 @@ function GlobalStoreContextProvider(props) {
                     home: store.home,
                     all: store.all,
                     user: store.user,
-                    community: store.community
+                    community: store.community,
+                    search: store.search
                 })
             }
             // CREATE A NEW LIST
@@ -109,7 +113,8 @@ function GlobalStoreContextProvider(props) {
                     home: store.home,
                     all: store.all,
                     user: store.user,
-                    community: store.community
+                    community: store.community,
+                    search: store.search
                 })
             }
             // GET ALL THE LISTS SO WE CAN PRESENT THEM
@@ -125,7 +130,24 @@ function GlobalStoreContextProvider(props) {
                     home: store.home,
                     all: store.all,
                     user: store.user,
-                    community: store.community
+                    community: store.community,
+                    search: store.search
+                });
+            }
+            case GlobalStoreActionType.SET_SEARCH: {
+                return setStore({
+                    idNamePairs: payload.pairs,
+                    currentList: null,
+                    newListCounter: store.newListCounter,
+                    isListNameEditActive: false,
+                    isItemEditActive: false,
+                    listMarkedForDeletion: null,
+                    viewingList: null,
+                    home: store.home,
+                    all: store.all,
+                    user: store.user,
+                    community: store.community,
+                    search: payload.text
                 });
             }
             // PREPARE TO DELETE A LIST
@@ -141,7 +163,8 @@ function GlobalStoreContextProvider(props) {
                     home: store.home,
                     all: store.all,
                     user: store.user,
-                    community: store.community
+                    community: store.community,
+                    search: store.search
                 });
             }
             // PREPARE TO DELETE A LIST
@@ -157,7 +180,8 @@ function GlobalStoreContextProvider(props) {
                     home: store.home,
                     all: store.all,
                     user: store.user,
-                    community: store.community
+                    community: store.community,
+                    search: store.search
                 });
             }
             // UPDATE A LIST
@@ -173,7 +197,8 @@ function GlobalStoreContextProvider(props) {
                     home: store.home,
                     all: store.all,
                     user: store.user,
-                    community: store.community
+                    community: store.community,
+                    search: store.search
                 });
             }
             // START EDITING A LIST ITEM
@@ -189,7 +214,8 @@ function GlobalStoreContextProvider(props) {
                     home: store.home,
                     all: store.all,
                     user: store.user,
-                    community: store.community
+                    community: store.community,
+                    search: store.search
                 });
             }
             // START EDITING A LIST NAME
@@ -205,22 +231,24 @@ function GlobalStoreContextProvider(props) {
                     home: store.home,
                     all: store.all,
                     user: store.user,
-                    community: store.community
+                    community: store.community,
+                    search: store.search
                 });
             }
             case GlobalStoreActionType.UPDATE_VIEWING_LIST: {
                 return setStore({
-                    idNamePairs: store.idNamePairs,
+                    idNamePairs: payload.pairs,
                     currentList: null,
                     newListCounter: store.newListCounter,
                     isListNameEditActive: false,
                     isItemEditActive: false,
                     listMarkedForDeletion: null,
-                    viewingList: payload,
+                    viewingList: payload.viewing,
                     home: store.home,
                     all: store.all,
                     user: store.user,
-                    community: store.community
+                    community: store.community,
+                    search: store.search
                 });
             }
             case GlobalStoreActionType.SET_HOME: {
@@ -235,7 +263,8 @@ function GlobalStoreContextProvider(props) {
                     home: true,
                     all: false,
                     user: false,
-                    community: false
+                    community: false,
+                    search: ''
                 });
             }
             case GlobalStoreActionType.SET_ALL: {
@@ -250,7 +279,8 @@ function GlobalStoreContextProvider(props) {
                     home: false,
                     all: true,
                     user: false,
-                    community: false
+                    community: false,
+                    search: ''
                 });
             }
             case GlobalStoreActionType.SET_USER: {
@@ -265,7 +295,8 @@ function GlobalStoreContextProvider(props) {
                     home: false,
                     all: false,
                     user: true,
-                    community: false
+                    community: false,
+                    search: ''
                 });
             }
             case GlobalStoreActionType.SET_COMMUNITY: {
@@ -280,7 +311,8 @@ function GlobalStoreContextProvider(props) {
                     home: false,
                     all: false,
                     user: false,
-                    community: true
+                    community: true,
+                    search: ''
                 });
             }
             default:
@@ -291,6 +323,78 @@ function GlobalStoreContextProvider(props) {
     // THESE ARE THE FUNCTIONS THAT WILL UPDATE OUR STORE AND
     // DRIVE THE STATE OF THE APPLICATION. WE'LL CALL THESE IN 
     // RESPONSE TO EVENTS INSIDE OUR COMPONENTS.
+
+    store.dislike = async function(id) {
+        let response = await api.getTop5ListById(id);
+        if (response.data.success) {
+            let top5List = response.data.top5List;
+            top5List.dislikes = top5List.dislikes+1;
+            async function updateList(top5List) {
+                response = await api.updateTop5ListById(top5List._id, top5List);
+                if (response.data.success) {
+                    async function getListPairs() {
+                        response = await api.getTop5ListPairs();
+                        if (response.data.success) {
+                            let pairsArray = response.data.idNamePairs;
+
+                            let out = [];
+                            for (let i = 0; i < pairsArray.length; i++) {
+                                if (pairsArray[i].owner === auth.user.email) {
+                                    out.push(pairsArray[i]);
+                                }
+                            }
+
+                            storeReducer({
+                                type: GlobalStoreActionType.CHANGE_LIST_NAME,
+                                payload: {
+                                    idNamePairs: out,
+                                    top5List: null
+                                }
+                            });
+                        }
+                    }
+                    getListPairs(top5List);
+                }
+            }
+            updateList(top5List);
+        }
+    }
+
+    store.like = async function(id) {
+        let response = await api.getTop5ListById(id);
+        if (response.data.success) {
+            let top5List = response.data.top5List;
+            top5List.likes = top5List.likes + 1;
+            async function updateList(top5List) {
+                response = await api.updateTop5Likes(top5List._id, top5List);
+                if (response.data.success) {
+                    async function getListPairs() {
+                        response = await api.getTop5ListPairs();
+                        if (response.data.success) {
+                            let pairsArray = response.data.idNamePairs;
+
+                            let out = [];
+                            for (let i = 0; i < pairsArray.length; i++) {
+                                if (pairsArray[i].owner === auth.user.email) {
+                                    out.push(pairsArray[i]);
+                                }
+                            }
+
+                            storeReducer({
+                                type: GlobalStoreActionType.CHANGE_LIST_NAME,
+                                payload: {
+                                    idNamePairs: out,
+                                    top5List: null
+                                }
+                            });
+                        }
+                    }
+                    getListPairs(top5List);
+                }
+            }
+            updateList(top5List);
+        }
+    }
 
     store.setOption = function (opt) {
         console.log("setting options to view " + opt + " lists");
@@ -354,10 +458,21 @@ function GlobalStoreContextProvider(props) {
             list.views = views + 1;
             response = await api.updateTop5ListById(list._id, list);
             if (response.data.success) {
-                storeReducer({
-                    type: GlobalStoreActionType.UPDATE_VIEWING_LIST,
-                    payload: list.items
-                });
+                const response = await api.getTop5ListPairs();
+                if (response.data.success) {
+                    let pairsArray = response.data.idNamePairs;
+
+                    let out = [];
+                    for (let i = 0; i < pairsArray.length; i++) {
+                        if (pairsArray[i].owner === auth.user.email) {
+                            out.push(pairsArray[i]);
+                        }
+                    }
+                    storeReducer({
+                        type: GlobalStoreActionType.UPDATE_VIEWING_LIST,
+                        payload: {viewing: list.items, pairs: out}
+                    });
+                }
             }
         }
     }
@@ -383,7 +498,9 @@ function GlobalStoreContextProvider(props) {
             ownerEmail: auth.user.email,
             ownerName: auth.user.firstName + " " + auth.user.lastName,
             views: 0,
-            pubDate: new Date(-8640000000000000)
+            likes: 0,
+            dislikes: 0,
+            pubDate: new Date(-8640000000000000),
         };
         const response = await api.createTop5List(payload);
         if (response.data.success) {
@@ -445,9 +562,17 @@ function GlobalStoreContextProvider(props) {
                 payload: out
             });
         } else if (sort === 'likes') {
-
+            let out = store.idNamePairs.sort((a, b) => (a.likes > b.likes) ? -1 : ((b.likes > a.likes) ? 1 : 0))
+            storeReducer({
+                type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
+                payload: out
+            });
         } else if (sort === 'dislikes') {
-
+            let out = store.idNamePairs.sort((a, b) => (a.dislikes > b.dislikes) ? -1 : ((b.dislikes > a.dislikes) ? 1 : 0))
+            storeReducer({
+                type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
+                payload: out
+            });
         }
     }
 
@@ -469,8 +594,8 @@ function GlobalStoreContextProvider(props) {
                     if (compare.startsWith(search.toLowerCase())) { ret.push(out[i]); }
                 }
                 storeReducer({
-                    type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
-                    payload: ret
+                    type: GlobalStoreActionType.SET_SEARCH,
+                    payload: {pairs: ret, text: search}
                 });
             }
         } else if (store.all) { //returns lists with name 'search' (case-insensitive match)
@@ -490,8 +615,8 @@ function GlobalStoreContextProvider(props) {
                     if (compare === search.toLowerCase()) { ret.push(out[i]); }
                 }
                 storeReducer({
-                    type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
-                    payload: ret
+                    type: GlobalStoreActionType.SET_SEARCH,
+                    payload: {pairs: ret, text: search}
                 });
 
             }
@@ -506,8 +631,8 @@ function GlobalStoreContextProvider(props) {
                     }
                 }
                 storeReducer({
-                    type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
-                    payload: out
+                    type: GlobalStoreActionType.SET_SEARCH,
+                    payload: {pairs: out, text: search}
                 });
             }
         } else if (store.community) { //returns community lists with name 'search' (case-insensitive list name match)
@@ -602,7 +727,6 @@ function GlobalStoreContextProvider(props) {
         let response = await api.getTop5ListById(id);
         if (response.data.success) {
             let top5List = response.data.top5List;
-
             response = await api.updateTop5ListById(top5List._id, top5List);
             if (response.data.success) {
                 storeReducer({
