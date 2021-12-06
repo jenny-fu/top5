@@ -194,9 +194,9 @@ function ListCard(props) {
     function handleExpandPub(event, id) {
         event.stopPropagation();
         store.updateViewing(id);
-        handleExpandPub(event);
+        handlePub(event);
     }
-    function handleExpandPub(event) {
+    function handlePub(event) {
         event.stopPropagation();
         let list = store.viewingList;
         // console.log(list)
@@ -238,7 +238,7 @@ function ListCard(props) {
                 <div className="list-right" style={{ display: 'inline', padding: '8px' }}>
                     Views: <span style={{ color: 'red' }}> {idNamePair.views} </span>
                     <Box style={{ display: 'inline', marginTop: '-8%', float: 'right' }}>
-                        <IconButton onClick={closeView}>
+                        <IconButton onClick={closeViewPub}>
                             <ArrowDropUpIcon style={{ fontSize: '20pt', color: 'black' }} />
                         </IconButton>
                     </Box>
@@ -247,7 +247,7 @@ function ListCard(props) {
         </div>);
 
     }
-    function closeView() {
+    function closeViewPub() {
         pubStyle = {
             fontSize: '20pt',
             width: '100%',
