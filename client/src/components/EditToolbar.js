@@ -66,8 +66,8 @@ function EditToolbar(props) {
             <MenuItem onClick={() => handleSort("dislikes")}>Dislikes</MenuItem>
         </Menu>
     );
-    
-    function handleSort(sort){
+
+    function handleSort(sort) {
         // props.sortBy(sort);
         store.sortBy(sort);
         handleMenuClose();
@@ -117,19 +117,13 @@ function EditToolbar(props) {
     return (
         <div id="edit-toolbar">
             <Button disabled={disabled} onClick={toggleHome}>
-                <Link to='/'>
-                    <HomeOutlinedIcon id={homeSelected ? 'button-selected' : ''} className={name} style={{ height: '40px', width: '50px', color: 'black' }} />
-                </Link>
+                <HomeOutlinedIcon id={homeSelected ? 'button-selected' : ''} className={name} style={{ height: '40px', width: '50px', color: 'black' }} />
             </Button>
             <Button disabled={disabled} onClick={toggleAll}>
-                <Link to='/allLists'>
-                    <GroupsOutlinedIcon id={allSelected ? 'button-selected' : ''} className={name} style={{ height: '40px', width: '50px', color: 'black' }} />
-                </Link>
+                <GroupsOutlinedIcon id={allSelected ? 'button-selected' : ''} className={name} style={{ height: '40px', width: '50px', color: 'black' }} />
             </Button>
             <Button disabled={disabled} onClick={toggleUser}>
-                <Link to='/userLists'>
-                    <PersonOutlinedIcon id={userSelected ? 'button-selected' : ''} className={name} style={{ height: '40px', width: '50px', color: 'black' }} />
-                </Link>
+                <PersonOutlinedIcon id={userSelected ? 'button-selected' : ''} className={name} style={{ height: '40px', width: '50px', color: 'black' }} />
             </Button>
             <Button disabled={disabled} onClick={toggleCommunity}>
                 <FunctionsOutlinedIcon id={communitySelected ? 'button-selected' : ''} className={name} style={{ height: '40px', width: '50px', color: 'black' }} />
