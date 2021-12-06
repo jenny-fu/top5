@@ -1,5 +1,6 @@
 const auth = require('../auth');
 const Top5List = require('../models/top5list-model');
+// const Community = require('../models/community-model');
 
 createTop5List = (req, res) => {
     const body = req.body;
@@ -32,6 +33,7 @@ createTop5List = (req, res) => {
             })
         })
 }
+
 updateTop5Likes = async (req, res) => {
     const body = req.body
     console.log("updateTop5List: " + JSON.stringify(body));
@@ -52,6 +54,45 @@ updateTop5Likes = async (req, res) => {
         }
 
         top5List.likes = body.likes
+        top5List
+            .save()
+            .then(() => {
+                console.log("SUCCESS!!!");
+                return res.status(200).json({
+                    success: true,
+                    id: top5List._id,
+                    message: 'Top 5 List updated!',
+                })
+            })
+            .catch(error => {
+                console.log("FAILURE: " + JSON.stringify(error));
+                return res.status(404).json({
+                    error,
+                    message: 'Top 5 List not updated!',
+                })
+            })
+    })
+}
+updateTop5Views = async (req, res) => {
+    const body = req.body
+    console.log("updateTop5List: " + JSON.stringify(body));
+    if (!body) {
+        return res.status(400).json({
+            success: false,
+            error: 'You must provide a body to update',
+        })
+    }
+
+    Top5List.findOne({ _id: req.params.id }, (err, top5List) => {
+        console.log("top5List found: " + JSON.stringify(top5List));
+        if (err) {
+            return res.status(404).json({
+                err,
+                message: 'Top 5 List not found!',
+            })
+        }
+
+        top5List.views = body.views
         top5List
             .save()
             .then(() => {
@@ -136,7 +177,7 @@ getTop5ListById = async (req, res) => {
             return res.status(400).json({ success: false, error: err });
         }
         return res.status(200).json({ success: true, top5List: list })
-    }).catch(err => console.log(err))
+    }).catch(err => console.log(    err))
 }
 getTop5Lists = async (req, res) => {
     await Top5List.find({}, (err, top5Lists) => {
@@ -197,5 +238,6 @@ module.exports = {
     getTop5Lists,
     getTop5ListPairs,
     getTop5ListById,
-    updateTop5Likes
+    updateTop5Likes,
+    updateTop5Views
 }

@@ -263,6 +263,8 @@ function ListCard(props) {
     function handlePub(event) {
         event.stopPropagation();
         let list = store.viewingList;
+        let items = [];
+        if(list) items = list.items;
         // console.log(list)
         pubStyle = {
             fontSize: '20pt',

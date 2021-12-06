@@ -49,7 +49,7 @@ function GlobalStoreContextProvider(props) {
         isListNameEditActive: false,
         isItemEditActive: false,
         listMarkedForDeletion: null,
-        viewingList: [],
+        viewingList: null,
         home: true,
         all: false,
         user: false,
@@ -324,11 +324,11 @@ function GlobalStoreContextProvider(props) {
     // DRIVE THE STATE OF THE APPLICATION. WE'LL CALL THESE IN 
     // RESPONSE TO EVENTS INSIDE OUR COMPONENTS.
 
-    store.dislike = async function(id) {
+    store.dislike = async function (id) {
         let response = await api.getTop5ListById(id);
         if (response.data.success) {
             let top5List = response.data.top5List;
-            top5List.dislikes = top5List.dislikes+1;
+            top5List.dislikes = top5List.dislikes + 1;
             async function updateList(top5List) {
                 response = await api.updateTop5ListById(top5List._id, top5List);
                 if (response.data.success) {
@@ -360,7 +360,7 @@ function GlobalStoreContextProvider(props) {
         }
     }
 
-    store.like = async function(id) {
+    store.like = async function (id) {
         let response = await api.getTop5ListById(id);
         if (response.data.success) {
             let top5List = response.data.top5List;
@@ -453,28 +453,35 @@ function GlobalStoreContextProvider(props) {
     store.updateViewing = async function (id) {
         let response = await api.getTop5ListById(id);
         if (response.data.success) {
-            let list = response.data.top5List;
-            let views = list.views;
-            list.views = views + 1;
-            response = await api.updateTop5ListById(list._id, list);
-            if (response.data.success) {
-                const response = await api.getTop5ListPairs();
+            let top5List = response.data.top5List;
+            let views = top5List.views;
+            top5List.views = views + 1;
+            async function updateList(top5List) {
+                response = await api.updateTop5ViewsById(top5List._id, top5List);
                 if (response.data.success) {
-                    let pairsArray = response.data.idNamePairs;
+                    async function getListPairs() {
+                        response = await api.getTop5ListPairs();
+                        if (response.data.success) {
+                            let pairsArray = response.data.idNamePairs;
+                            let out = [];
+                            for (let i = 0; i < pairsArray.length; i++) {
+                                if (pairsArray[i].owner === auth.user.email) {
+                                    out.push(pairsArray[i]);
+                                }
+                            }
 
-                    let out = [];
-                    for (let i = 0; i < pairsArray.length; i++) {
-                        if (pairsArray[i].owner === auth.user.email) {
-                            out.push(pairsArray[i]);
+                            storeReducer({
+                                type: GlobalStoreActionType.UPDATE_VIEWING_LIST,
+                                payload: { viewing: top5List, pairs: out }
+                            });
                         }
                     }
-                    storeReducer({
-                        type: GlobalStoreActionType.UPDATE_VIEWING_LIST,
-                        payload: {viewing: list.items, pairs: out}
-                    });
+                    getListPairs(top5List);
                 }
             }
+            updateList(top5List);
         }
+        history.push("/");
     }
 
     // THIS FUNCTION PROCESSES CLOSING THE CURRENTLY LOADED LIST
@@ -544,13 +551,13 @@ function GlobalStoreContextProvider(props) {
 
     store.sortBy = function (sort) {
         if (sort === 'newest') {
-            let out = store.idNamePairs.sort((a, b) => (!a.published) ? 1 : (a.pubDate > b.pubDate) ? 1 : ((b.pubDate > a.pubDate) ? -1 : 0))
+            let out = store.idNamePairs.sort((a, b) => (!a.published) ? 1 : (!b.published) ? -1 : (a.pubDate > b.pubDate) ? 1 : ((b.pubDate > a.pubDate) ? -1 : 0))
             storeReducer({
                 type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
                 payload: out
             });
         } else if (sort === 'oldest') {
-            let out = store.idNamePairs.sort((a, b) => (a.pubDate < b.pubDate) ? 1 : ((b.pubDate < a.pubDate) ? -1 : 0))
+            let out = store.idNamePairs.sort((a, b) => (!a.published) ? 1 : (!b.published) ? -1 : (a.pubDate < b.pubDate) ? 1 : ((b.pubDate < a.pubDate) ? -1 : 0))
             storeReducer({
                 type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
                 payload: out
@@ -595,7 +602,7 @@ function GlobalStoreContextProvider(props) {
                 }
                 storeReducer({
                     type: GlobalStoreActionType.SET_SEARCH,
-                    payload: {pairs: ret, text: search}
+                    payload: { pairs: ret, text: search }
                 });
             }
         } else if (store.all) { //returns lists with name 'search' (case-insensitive match)
@@ -616,7 +623,7 @@ function GlobalStoreContextProvider(props) {
                 }
                 storeReducer({
                     type: GlobalStoreActionType.SET_SEARCH,
-                    payload: {pairs: ret, text: search}
+                    payload: { pairs: ret, text: search }
                 });
 
             }
@@ -632,7 +639,7 @@ function GlobalStoreContextProvider(props) {
                 }
                 storeReducer({
                     type: GlobalStoreActionType.SET_SEARCH,
-                    payload: {pairs: out, text: search}
+                    payload: { pairs: out, text: search }
                 });
             }
         } else if (store.community) { //returns community lists with name 'search' (case-insensitive list name match)
@@ -853,6 +860,61 @@ function GlobalStoreContextProvider(props) {
             top5List.name = newName;
             top5List.items = listItems;
             top5List.published = pub;
+
+            // if(pub){
+            //     async function communities(){
+            //         response = await api.getCommunities();
+            //         if(response.data.success){
+            //             let currentCommunities = response.data.top5Lists;
+            //             let exists = false;
+            //             let id = ""
+            //             for(let i = 0; i < currentCommunities.length; i++){
+            //                 if(currentCommunities[i].name.toLowerCase() === newName.toLowerCase()){ //community list already exists
+            //                     exists = true;
+            //                     id = currentCommunities._id;
+            //                     break;
+            //                 }
+            //             }
+            //             if(exists){ //if list exists, find item in the map and add
+            //                 async function getCommunity(id){
+            //                     response = await api.getCommunitiesById(id);
+            //                     if(response.data.success){
+            //                         let community = response.data.top5List
+            //                         async function update(id, community){
+            //                             let currentMapping = community.items;
+            //                             for(let j = 0; j < 5; j++){
+            //                                 if(currentMapping.has(listItems[j])){
+            //                                     let value = currentMapping.get(listItems[j]);
+            //                                     currentMapping.set(listItems[j], value);
+            //                                 }
+            //                                 else{ //create a new entry
+            //                                     currentMapping.set(listItems[j], 5-j);
+            //                                 }
+            //                             }
+            //                             community.items = currentMapping;
+            //                             await api.updateCommunity(id, community);
+            //                         } update(id, community);
+            //                     }
+            //                 } getCommunity(id);
+            //             }else{ //create new community
+            //                 let hash = new Map();
+            //                 for(let k = 0; k < 5; k++){
+            //                     hash.set(listItems[k], 5-k);
+            //                 }
+            //                 let payload = {
+            //                     name: newName,
+            //                     items: hash, // Map
+            //                     update: new Date(),
+            //                     views: 0,
+            //                     likes: 0,
+            //                     dislikes: 0
+            //                 }
+            //                 await api.createCommunity(payload);
+            //             }
+            //         }
+            //     } communities();
+            // }
+
             async function updateList(top5List) {
                 response = await api.updateTop5ListById(top5List._id, top5List);
                 if (response.data.success) {

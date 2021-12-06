@@ -76,9 +76,10 @@ function WorkspaceScreen() {
         let dupeItem = false;
         for(let k = 0; k < 5; k++){
             for(let m = k+1; m < 5; m++){
-                if(listItems[k] === listItems[m])
+                if(listItems[k] === listItems[m]){
                     dupeItem = true;
                     break;
+                }
             }
         }
 
