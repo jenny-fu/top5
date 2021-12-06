@@ -94,6 +94,15 @@ export default function AppBanner() {
         }
     }
 
+    function toggleHome() {
+        // setHome(true);
+        // setAll(false);
+        // setUser(false);
+        // setCommunity(false);
+        store.setOption('home');
+        // setLink('/');
+    }
+
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static" style={{backgroundColor:'lightgrey'}}>
@@ -104,7 +113,7 @@ export default function AppBanner() {
                         component="div"
                         sx={{ display: { xs: 'none', sm: 'block' } }}                        
                     >
-                        <Link style={{ textDecoration: 'none', color: 'goldenrod' }} to='/'>T<sup>5</sup>L</Link>
+                        <Box onClick={toggleHome} style={{ color: 'goldenrod', cursor: 'pointer' }}>T<sup>5</sup>L</Box>
                     </Typography>
                     <Box sx={{ flexGrow: 1 }}>{editToolbar}</Box>
                     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>

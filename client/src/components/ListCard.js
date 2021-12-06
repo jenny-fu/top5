@@ -405,7 +405,7 @@ function ListCard(props) {
                 <div id="list-right" style={{ display: 'inline' }}>
                     {likeBox}
                     {dislikeBox}
-                    <Box style={{ display: 'inline', padding: '8px', float: 'right', marginTop: '-4%' }}
+                    <Box style={{ display: 'inline', padding: '8px', float: 'right', marginTop: '-5%' }}
                         onClick={(event) => {
                             handleDeleteList(event, idNamePair._id)
                         }} aria-label='delete'>

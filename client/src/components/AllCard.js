@@ -159,13 +159,13 @@ function AllCard(props) {
                         <IconButton>
                             <ThumbUpOutlinedIcon style={{ fontSize: '20pt', color: 'black' }} />
                         </IconButton>
-                        <span>0</span>
+                        <span>{idNamePair.likes}</span>
                     </Box>
                     <Box style={{ display: 'inline', padding: '8px' }}>
                         <IconButton>
                             <ThumbDownOutlinedIcon style={{ fontSize: '20pt', color: 'black' }} />
                         </IconButton>
-                        <span>0</span>
+                        <span>{idNamePair.dislikes}</span>
                     </Box>
                 </div>
             </div>

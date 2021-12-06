@@ -544,7 +544,7 @@ function GlobalStoreContextProvider(props) {
 
     store.sortBy = function (sort) {
         if (sort === 'newest') {
-            let out = store.idNamePairs.sort((a, b) => (a.pubDate > b.pubDate) ? 1 : ((b.pubDate > a.pubDate) ? -1 : 0))
+            let out = store.idNamePairs.sort((a, b) => (!a.published) ? 1 : (a.pubDate > b.pubDate) ? 1 : ((b.pubDate > a.pubDate) ? -1 : 0))
             storeReducer({
                 type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
                 payload: out
@@ -555,19 +555,19 @@ function GlobalStoreContextProvider(props) {
                 type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
                 payload: out
             });
-        } else if (sort === 'views') {
+        } else if (sort === 'views') { //works
             let out = store.idNamePairs.sort((a, b) => (a.views > b.views) ? -1 : ((b.views > a.views) ? 1 : 0))
             storeReducer({
                 type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
                 payload: out
             });
-        } else if (sort === 'likes') {
+        } else if (sort === 'likes') { //works
             let out = store.idNamePairs.sort((a, b) => (a.likes > b.likes) ? -1 : ((b.likes > a.likes) ? 1 : 0))
             storeReducer({
                 type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
                 payload: out
             });
-        } else if (sort === 'dislikes') {
+        } else if (sort === 'dislikes') { //works
             let out = store.idNamePairs.sort((a, b) => (a.dislikes > b.dislikes) ? -1 : ((b.dislikes > a.dislikes) ? 1 : 0))
             storeReducer({
                 type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
