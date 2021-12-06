@@ -78,6 +78,7 @@ function EditToolbar(props) {
         setAll(false);
         setUser(false);
         setCommunity(false);
+        store.setOption('home');
         // setLink('/');
     }
     function toggleAll() {
@@ -85,6 +86,7 @@ function EditToolbar(props) {
         setHome(false);
         setUser(false);
         setCommunity(false);
+        store.setOption('all');
         // setLink('/allLists');
     }
     function toggleUser() {
@@ -92,6 +94,7 @@ function EditToolbar(props) {
         setHome(false);
         setAll(false);
         setCommunity(false);
+        store.setOption('user');
         // setLink('/userLists');
     }
     function toggleCommunity() {
@@ -99,15 +102,16 @@ function EditToolbar(props) {
         setHome(false);
         setAll(false);
         setUser(false);
+        store.setOption('community');
     }
 
-    function handleKeyPress(event) {
-        if (event.code === "Enter") {
-
-        }
-    }
     function handleUpdateText(event) {
         setText(event.target.value);
+    }
+    function handleKeyPress(event) {
+        if (event.code === "Enter") {
+            store.searchBy(text);
+        }
     }
 
     return (

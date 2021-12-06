@@ -312,18 +312,6 @@ function ListCard(props) {
                     </Box>
                 </div>
                 <div id="list-right" style={{ display: 'inline' }}>
-                    <Box style={{ display: 'inline', padding: '8px' }}>
-                        <IconButton>
-                            <ThumbUpOutlinedIcon style={{ fontSize: '20pt', color: 'black' }} />
-                        </IconButton>
-                        <span>0</span>
-                    </Box>
-                    <Box style={{ display: 'inline', padding: '8px' }}>
-                        <IconButton>
-                            <ThumbDownOutlinedIcon style={{ fontSize: '20pt', color: 'black' }} />
-                        </IconButton>
-                        <span>0</span>
-                    </Box>
                     <Box style={{ display: 'inline', padding: '8px', float: 'right', marginTop: '-4%' }}
                         onClick={(event) => {
                             handleDeleteList(event, idNamePair._id)
