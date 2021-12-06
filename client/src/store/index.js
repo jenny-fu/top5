@@ -496,7 +496,20 @@ function GlobalStoreContextProvider(props) {
 
             }
         } else if (store.user) { //returns lists created by 'search' (case-insensitive user name match)
-
+            const response = await api.getTop5ListPairs();
+            if (response.data.success) {
+                let pairsArray = response.data.idNamePairs;
+                let out = [];
+                for (let i = 0; i < pairsArray.length; i++) {
+                    if (pairsArray[i].published && pairsArray[i].ownerName.toLowerCase() === search.toLowerCase()) {
+                        out.push(pairsArray[i]);
+                    }
+                }
+                storeReducer({
+                    type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
+                    payload: out
+                });
+            }
         } else if (store.community) { //returns community lists with name 'search' (case-insensitive list name match)
 
         }
@@ -510,6 +523,28 @@ function GlobalStoreContextProvider(props) {
             let out = [];
             for (let i = 0; i < pairsArray.length; i++) {
                 if (pairsArray[i].published) {
+                    out.push(pairsArray[i]);
+                }
+            }
+
+            storeReducer({
+                type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
+                payload: out
+            });
+        }
+        else {
+            console.log("API FAILED TO GET THE LIST PAIRS");
+        }
+    }
+
+    store.loadNamePairs = async function (name) {
+        const response = await api.getTop5ListPairs();
+        if (response.data.success) {
+            let pairsArray = response.data.idNamePairs;
+
+            let out = [];
+            for (let i = 0; i < pairsArray.length; i++) {
+                if (pairsArray[i].published && pairsArray[i].ownerName === name) {
                     out.push(pairsArray[i]);
                 }
             }
