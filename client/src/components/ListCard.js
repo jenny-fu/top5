@@ -12,6 +12,8 @@ import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import { Link } from 'react-router-dom';
+import TextField from '@mui/material/TextField';
+import Comment from './Comment.js'
 
 import * as React from 'react';
 import Button from '@mui/material/Button';
@@ -60,6 +62,7 @@ function ListCard(props) {
     // const [editActive, setEditActive] = useState(false);
     // const [text, setText] = useState("");
     const { idNamePair } = props;
+    const [text, setText] = useState(''); //comment box
     const [expand, setExpand] = useState(<div>
         <div id='list-bottom'>
             <div className='list-left'>
@@ -207,7 +210,6 @@ function ListCard(props) {
                 </ListItem>
             </Box>
             <Box className='view-right'>
-
             </Box>
         </List>
             <div id='list-bottom'>
@@ -297,7 +299,20 @@ function ListCard(props) {
                 </ListItem>
             </Box>
             <Box className='view-right'>
-
+                <List className='comments-box'>
+                {/* {
+                    idNamePair.comments.map((comment) => (
+                        <ListCard
+                            user={comment.user}
+                            info={comment.text}
+                        />
+                    ))
+                } */}
+                </List>
+                <TextField id="comment" label="Add Comment" name="comment"
+                style={{ width: '100%', backgroundColor: 'white', borderRadius: '4px' }}
+                inputProps={{ style: { height: "10px", fontSize: '15px' } }}
+                autoComplete="search"/>
             </Box>
         </List>
             <div id='list-bottom'>
@@ -315,6 +330,14 @@ function ListCard(props) {
             </div>
         </div>);
 
+    }
+    function handleUpdateText(event) {
+        setText(event.target.value);
+    }
+    function handleKeyPress(event) {
+        if (event.code === "Enter") {
+            store.addComment(idNamePair._id, text);
+        }
     }
     function closeViewPub() {
         pubStyle = {

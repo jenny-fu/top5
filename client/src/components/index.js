@@ -14,6 +14,7 @@ import CommunityScreen from './CommunityScreen'
 import AllCard from './AllCard'
 import UserScreen from './UserScreen'
 import CommunityCard from './CommunityCard'
+import Comment from './Comment'
 /*
     This serves as a module so that we can import
     all the other components as we wish.
@@ -36,5 +37,6 @@ export {
     AllScreen,
     UserScreen,
     CommunityCard,
-    CommunityScreen
+    CommunityScreen,
+    Comment
 }

@@ -698,6 +698,7 @@ function GlobalStoreContextProvider(props) {
             likes: 0,
             dislikes: 0,
             pubDate: new Date(-8640000000000000),
+            comments: []
         };
         const response = await api.createTop5List(payload);
         if (response.data.success) {

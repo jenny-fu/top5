@@ -261,7 +261,8 @@ getTop5ListPairs = async (req, res) => {
                     pubDate: list.pubDate.toDateString(),
                     views: list.views,
                     likes: list.likes,
-                    dislikes: list.dislikes
+                    dislikes: list.dislikes,
+                    comments: list.comments
                 };
                 pairs.push(pair);
             // }

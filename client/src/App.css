@@ -242,12 +242,20 @@ body {
   background-color: var(--swatch-status);
   border: solid black 1px;
   border-radius: 10px;
-  width: 50%;
+  width: 53%;
   color: goldenrod;
 }
 .view-right{
   /* background-color: red; */
-  width: 40%;
+  width: 46%;
+  right: 0%;
+  bottom: 4%;
+  position: absolute;
+}
+.comments-box{
+  /* background-color: orange; */
+  height: 170px;
+  overflow: scroll;
 }
 
 #list-selector-list {

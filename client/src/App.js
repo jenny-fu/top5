@@ -11,7 +11,8 @@ import {
     WorkspaceScreen,
     AllScreen,
     UserScreen,
-    CommunityScreen
+    CommunityScreen,
+    Comment
 } from './components'
 /*
     This is our application's top-level component.

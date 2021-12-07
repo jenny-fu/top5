@@ -10,6 +10,7 @@ import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined';
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import { Link } from 'react-router-dom';
 import * as React from 'react';
+import TextField from '@mui/material/TextField';
 
 let listStyle = {
     fontSize: '20pt',
@@ -85,7 +86,20 @@ function CommunityCard(props) {
                 </ListItem>
             </Box>
             <Box className='view-right'>
-
+                <List className='comments-box'>
+                    {/* {
+                        idNamePair.comments.map((comment) => (
+                            <ListCard
+                                user={comment.user}
+                                info={comment.text}
+                            />
+                        ))
+                    } */}
+                </List>
+                    <TextField id="comment" label="Add Comment" name="comment"
+                    style={{ width: '100%', backgroundColor: 'white', borderRadius: '4px' }}
+                    inputProps={{ style: { height: "10px", fontSize: '15px' } }}
+                    autoComplete="search"/>
             </Box>
         </List>
             <div id='list-bottom'>
