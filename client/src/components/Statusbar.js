@@ -45,11 +45,18 @@ function Statusbar() {
                 <Typography variant="h4">Your Lists</Typography>
             </div>
         </div>
-    if(store.all || store.community || store.user){
+    if(store.all || store.user){
         out = 
         <div id="top5-statusbar">
             <div id="list-selector-heading"> 
                 <Typography style={{marginTop:'12.5%'}} variant="h4">{value}</Typography>
+            </div>
+        </div>
+    }else if(store.community){
+        out = 
+        <div id="top5-statusbar">
+            <div id="list-selector-heading"> 
+                <Typography style={{marginTop:'12.5%'}} variant="h4">Community Lists</Typography>
             </div>
         </div>
     }

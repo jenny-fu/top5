@@ -10,8 +10,10 @@ import Statusbar from './Statusbar'
 import Top5Item from './Top5Item'
 import WorkspaceScreen from './WorkspaceScreen'
 import AllScreen from './AllScreen'
+import CommunityScreen from './CommunityScreen'
 import AllCard from './AllCard'
 import UserScreen from './UserScreen'
+import CommunityCard from './CommunityCard'
 /*
     This serves as a module so that we can import
     all the other components as we wish.
@@ -32,5 +34,7 @@ export {
     Top5Item, 
     WorkspaceScreen,
     AllScreen,
-    UserScreen
+    UserScreen,
+    CommunityCard,
+    CommunityScreen
 }

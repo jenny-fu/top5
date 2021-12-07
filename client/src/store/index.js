@@ -32,7 +32,9 @@ export const GlobalStoreActionType = {
     SET_ALL: "SET_ALL",
     SET_USER: "SET_USER",
     SET_COMMUNITY: "SET_COMMUNITY",
-    SET_SEARCH: "SET_SEARCH"
+    SET_SEARCH: "SET_SEARCH",
+    UPDATE_COMMUNITY: "UPDATE_COMMUNITY",
+    GUEST_LOGIN: 'GUEST_LOGIN'
 }
 
 // WE'LL NEED THIS TO PROCESS TRANSACTIONS
@@ -54,7 +56,9 @@ function GlobalStoreContextProvider(props) {
         all: false,
         user: false,
         community: false,
-        search: ''
+        search: '',
+        communityLists: [], //array of object of new lists..? [Object{}]
+        communityMapping: [], //array of maps...? [Map()]
     });
     const history = useHistory();
 
@@ -80,7 +84,9 @@ function GlobalStoreContextProvider(props) {
                     all: store.all,
                     user: store.user,
                     community: store.community,
-                    search: store.search
+                    search: store.search,
+                    communityLists: store.communityLists,
+                    communityMapping: store.communityMapping,
                 });
             }
             // STOP EDITING THE CURRENT LIST
@@ -97,7 +103,9 @@ function GlobalStoreContextProvider(props) {
                     all: store.all,
                     user: store.user,
                     community: store.community,
-                    search: store.search
+                    search: store.search,
+                    communityLists: store.communityLists,
+                    communityMapping: store.communityMapping,
                 })
             }
             // CREATE A NEW LIST
@@ -114,7 +122,9 @@ function GlobalStoreContextProvider(props) {
                     all: store.all,
                     user: store.user,
                     community: store.community,
-                    search: store.search
+                    search: store.search,
+                    communityLists: store.communityLists,
+                    communityMapping: store.communityMapping,
                 })
             }
             // GET ALL THE LISTS SO WE CAN PRESENT THEM
@@ -131,7 +141,9 @@ function GlobalStoreContextProvider(props) {
                     all: store.all,
                     user: store.user,
                     community: store.community,
-                    search: store.search
+                    search: store.search,
+                    communityLists: store.communityLists,
+                    communityMapping: store.communityMapping,
                 });
             }
             case GlobalStoreActionType.SET_SEARCH: {
@@ -147,7 +159,9 @@ function GlobalStoreContextProvider(props) {
                     all: store.all,
                     user: store.user,
                     community: store.community,
-                    search: payload.text
+                    search: payload.text,
+                    communityLists: store.communityLists,
+                    communityMapping: store.communityMapping,
                 });
             }
             // PREPARE TO DELETE A LIST
@@ -164,7 +178,9 @@ function GlobalStoreContextProvider(props) {
                     all: store.all,
                     user: store.user,
                     community: store.community,
-                    search: store.search
+                    search: store.search,
+                    communityLists: store.communityLists,
+                    communityMapping: store.communityMapping,
                 });
             }
             // PREPARE TO DELETE A LIST
@@ -181,7 +197,9 @@ function GlobalStoreContextProvider(props) {
                     all: store.all,
                     user: store.user,
                     community: store.community,
-                    search: store.search
+                    search: store.search,
+                    communityLists: store.communityLists,
+                    communityMapping: store.communityMapping,
                 });
             }
             // UPDATE A LIST
@@ -198,7 +216,9 @@ function GlobalStoreContextProvider(props) {
                     all: store.all,
                     user: store.user,
                     community: store.community,
-                    search: store.search
+                    search: store.search,
+                    communityLists: store.communityLists,
+                    communityMapping: store.communityMapping,
                 });
             }
             // START EDITING A LIST ITEM
@@ -215,7 +235,9 @@ function GlobalStoreContextProvider(props) {
                     all: store.all,
                     user: store.user,
                     community: store.community,
-                    search: store.search
+                    search: store.search,
+                    communityLists: store.communityLists,
+                    communityMapping: store.communityMapping,
                 });
             }
             // START EDITING A LIST NAME
@@ -232,7 +254,9 @@ function GlobalStoreContextProvider(props) {
                     all: store.all,
                     user: store.user,
                     community: store.community,
-                    search: store.search
+                    search: store.search,
+                    communityLists: store.communityLists,
+                    communityMapping: store.communityMapping,
                 });
             }
             case GlobalStoreActionType.UPDATE_VIEWING_LIST: {
@@ -248,7 +272,9 @@ function GlobalStoreContextProvider(props) {
                     all: store.all,
                     user: store.user,
                     community: store.community,
-                    search: store.search
+                    search: store.search,
+                    communityLists: store.communityLists,
+                    communityMapping: store.communityMapping,
                 });
             }
             case GlobalStoreActionType.SET_HOME: {
@@ -264,7 +290,9 @@ function GlobalStoreContextProvider(props) {
                     all: false,
                     user: false,
                     community: false,
-                    search: ''
+                    search: '',
+                    communityLists: store.communityLists,
+                    communityMapping: store.communityMapping,
                 });
             }
             case GlobalStoreActionType.SET_ALL: {
@@ -280,7 +308,9 @@ function GlobalStoreContextProvider(props) {
                     all: true,
                     user: false,
                     community: false,
-                    search: ''
+                    search: '',
+                    communityLists: store.communityLists,
+                    communityMapping: store.communityMapping,
                 });
             }
             case GlobalStoreActionType.SET_USER: {
@@ -296,7 +326,9 @@ function GlobalStoreContextProvider(props) {
                     all: false,
                     user: true,
                     community: false,
-                    search: ''
+                    search: '',
+                    communityLists: store.communityLists,
+                    communityMapping: store.communityMapping,
                 });
             }
             case GlobalStoreActionType.SET_COMMUNITY: {
@@ -312,7 +344,45 @@ function GlobalStoreContextProvider(props) {
                     all: false,
                     user: false,
                     community: true,
-                    search: ''
+                    search: '',
+                    communityLists: store.communityLists,
+                    communityMapping: store.communityMapping,
+                });
+            }
+            case GlobalStoreActionType.UPDATE_COMMUNITY: {
+                return setStore({
+                    idNamePairs: payload.idNamePairs,
+                    currentList: null,
+                    newListCounter: store.newListCounter,
+                    isListNameEditActive: false,
+                    isItemEditActive: false,
+                    listMarkedForDeletion: null,
+                    viewingList: null,
+                    home: store.home,
+                    all: store.all,
+                    user: store.user,
+                    community: store.community,
+                    search: store.search,
+                    communityLists: payload.list,
+                    communityMapping: payload.map,
+                });
+            }
+            case GlobalStoreActionType.GUEST_LOGIN: {
+                return setStore({
+                    idNamePairs: payload,
+                    currentList: null,
+                    newListCounter: store.newListCounter,
+                    isListNameEditActive: false,
+                    isItemEditActive: false,
+                    listMarkedForDeletion: null,
+                    viewingList: null,
+                    home: false,
+                    all: true,
+                    user: false,
+                    community: false,
+                    search: '',
+                    communityLists: store.communityLists,
+                    communityMapping: store.communityMapping,
                 });
             }
             default:
@@ -324,32 +394,70 @@ function GlobalStoreContextProvider(props) {
     // DRIVE THE STATE OF THE APPLICATION. WE'LL CALL THESE IN 
     // RESPONSE TO EVENTS INSIDE OUR COMPONENTS.
 
-    store.dislike = async function (id) {
+    store.dislike = async function (id, val) {
         let response = await api.getTop5ListById(id);
         if (response.data.success) {
             let top5List = response.data.top5List;
-            top5List.dislikes = top5List.dislikes + 1;
+            top5List.dislikes = top5List.dislikes + val;
             async function updateList(top5List) {
-                response = await api.updateTop5ListById(top5List._id, top5List);
+                let response = await api.updateTop5Dislikes(top5List._id, top5List);
                 if (response.data.success) {
                     async function getListPairs() {
                         response = await api.getTop5ListPairs();
                         if (response.data.success) {
-                            let pairsArray = response.data.idNamePairs;
-
                             let out = [];
-                            for (let i = 0; i < pairsArray.length; i++) {
-                                if (pairsArray[i].owner === auth.user.email) {
-                                    out.push(pairsArray[i]);
+                            let pairsArray = response.data.idNamePairs;
+                            if(store.home){
+                                for (let i = 0; i < pairsArray.length; i++) {
+                                    if (pairsArray[i].owner === auth.user.email) {
+                                        out.push(pairsArray[i]);
+                                    }
                                 }
+                                if(store.search !== ''){
+                                    let ret = [];
+                                    for (let i = 0; i < out.length; i++) {
+                                        let compare = out[i].name.toLowerCase();
+                                        if (compare.startsWith(store.search.toLowerCase())) { ret.push(out[i]); }
+                                    }
+                                    out = ret.slice();
+                                }
+                            }else if(store.all){
+                                for (let i = 0; i < pairsArray.length; i++) {
+                                    if (pairsArray[i].published) {
+                                        out.push(pairsArray[i]);
+                                    }
+                                }
+                                if(store.search !== ''){
+                                    let ret = [];
+                                    for (let i = 0; i < out.length; i++) {
+                                        let compare = out[i].name.toLowerCase();
+                                        if (compare === store.search.toLowerCase()) { ret.push(out[i]); }
+                                    }
+                                    out = ret.slice();
+                                }
+                            }else if(store.user){
+                                for (let i = 0; i < pairsArray.length; i++) {
+                                    if (pairsArray[i].published && pairsArray[i].ownerName.toLowerCase() === store.search.toLowerCase()) {
+                                        out.push(pairsArray[i]);
+                                    }
+                                }
+                            }else if(store.community){
+                                for (let i = 0; i < pairsArray.length; i++) {
+                                    if (pairsArray[i].published) {
+                                        out.push(pairsArray[i]);
+                                    }
+                                }
+                                let ret = [];
+                                for (let i = 0; i < out.length; i++) {
+                                    let compare = out[i].name.toLowerCase();
+                                    if (compare.contains(store.search.toLowerCase())) { ret.push(out[i]); }
+                                }
+                                out = ret.slice();
                             }
 
                             storeReducer({
-                                type: GlobalStoreActionType.CHANGE_LIST_NAME,
-                                payload: {
-                                    idNamePairs: out,
-                                    top5List: null
-                                }
+                                type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
+                                payload: out
                             });
                         }
                     }
@@ -360,32 +468,70 @@ function GlobalStoreContextProvider(props) {
         }
     }
 
-    store.like = async function (id) {
+    store.like = async function (id, val) {
         let response = await api.getTop5ListById(id);
         if (response.data.success) {
             let top5List = response.data.top5List;
-            top5List.likes = top5List.likes + 1;
+            top5List.likes = top5List.likes + val;
             async function updateList(top5List) {
-                response = await api.updateTop5Likes(top5List._id, top5List);
+                let response = await api.updateTop5Likes(top5List._id, top5List);
                 if (response.data.success) {
                     async function getListPairs() {
                         response = await api.getTop5ListPairs();
                         if (response.data.success) {
-                            let pairsArray = response.data.idNamePairs;
-
                             let out = [];
-                            for (let i = 0; i < pairsArray.length; i++) {
-                                if (pairsArray[i].owner === auth.user.email) {
-                                    out.push(pairsArray[i]);
+                            let pairsArray = response.data.idNamePairs;
+                            if(store.home){
+                                for (let i = 0; i < pairsArray.length; i++) {
+                                    if (pairsArray[i].owner === auth.user.email) {
+                                        out.push(pairsArray[i]);
+                                    }
                                 }
+                                if(store.search !== ''){
+                                    let ret = [];
+                                    for (let i = 0; i < out.length; i++) {
+                                        let compare = out[i].name.toLowerCase();
+                                        if (compare.startsWith(store.search.toLowerCase())) { ret.push(out[i]); }
+                                    }
+                                    out = ret.slice();
+                                }
+                            }else if(store.all){
+                                for (let i = 0; i < pairsArray.length; i++) {
+                                    if (pairsArray[i].published) {
+                                        out.push(pairsArray[i]);
+                                    }
+                                }
+                                if(store.search !== ''){
+                                    let ret = [];
+                                    for (let i = 0; i < out.length; i++) {
+                                        let compare = out[i].name.toLowerCase();
+                                        if (compare === store.search.toLowerCase()) { ret.push(out[i]); }
+                                    }
+                                    out = ret.slice();
+                                }
+                            }else if(store.user){
+                                for (let i = 0; i < pairsArray.length; i++) {
+                                    if (pairsArray[i].published && pairsArray[i].ownerName.toLowerCase() === store.search.toLowerCase()) {
+                                        out.push(pairsArray[i]);
+                                    }
+                                }
+                            }else if(store.community){
+                                for (let i = 0; i < pairsArray.length; i++) {
+                                    if (pairsArray[i].published) {
+                                        out.push(pairsArray[i]);
+                                    }
+                                }
+                                let ret = [];
+                                for (let i = 0; i < out.length; i++) {
+                                    let compare = out[i].name.toLowerCase();
+                                    if (compare.contains(store.search.toLowerCase())) { ret.push(out[i]); }
+                                }
+                                out = ret.slice();
                             }
 
                             storeReducer({
-                                type: GlobalStoreActionType.CHANGE_LIST_NAME,
-                                payload: {
-                                    idNamePairs: out,
-                                    top5List: null
-                                }
+                                type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
+                                payload: out
                             });
                         }
                     }
@@ -409,7 +555,7 @@ function GlobalStoreContextProvider(props) {
             history.push('/userLists');
         } else if (opt === 'community') {
             storeReducer({ type: GlobalStoreActionType.SET_COMMUNITY });
-            history.push('/');
+            history.push('/communityLists');
         }
     }
 
@@ -454,25 +600,68 @@ function GlobalStoreContextProvider(props) {
         let response = await api.getTop5ListById(id);
         if (response.data.success) {
             let top5List = response.data.top5List;
-            let views = top5List.views;
-            top5List.views = views + 1;
             async function updateList(top5List) {
-                response = await api.updateTop5ViewsById(top5List._id, top5List);
+                let response = await api.updateTop5Views(top5List._id);
                 if (response.data.success) {
                     async function getListPairs() {
                         response = await api.getTop5ListPairs();
                         if (response.data.success) {
-                            let pairsArray = response.data.idNamePairs;
                             let out = [];
-                            for (let i = 0; i < pairsArray.length; i++) {
-                                if (pairsArray[i].owner === auth.user.email) {
-                                    out.push(pairsArray[i]);
+                            let pairsArray = response.data.idNamePairs;
+                            if(store.home){
+                                for (let i = 0; i < pairsArray.length; i++) {
+                                    if (pairsArray[i].owner === auth.user.email) {
+                                        out.push(pairsArray[i]);
+                                    }
                                 }
+                                if(store.search !== ''){
+                                    let ret = [];
+                                    for (let i = 0; i < out.length; i++) {
+                                        let compare = out[i].name.toLowerCase();
+                                        if (compare.startsWith(store.search.toLowerCase())) { ret.push(out[i]); }
+                                    }
+                                    out = ret.slice();
+                                }
+                            }else if(store.all){
+                                for (let i = 0; i < pairsArray.length; i++) {
+                                    if (pairsArray[i].published) {
+                                        out.push(pairsArray[i]);
+                                    }
+                                }
+                                if(store.search !== ''){
+                                    let ret = [];
+                                    for (let i = 0; i < out.length; i++) {
+                                        let compare = out[i].name.toLowerCase();
+                                        if (compare === store.search.toLowerCase()) { ret.push(out[i]); }
+                                    }
+                                    out = ret.slice();
+                                }
+                            }else if(store.user){
+                                for (let i = 0; i < pairsArray.length; i++) {
+                                    if (pairsArray[i].published && pairsArray[i].ownerName.toLowerCase() === store.search.toLowerCase()) {
+                                        out.push(pairsArray[i]);
+                                    }
+                                }
+                            }else if(store.community){
+                                for (let i = 0; i < pairsArray.length; i++) {
+                                    if (pairsArray[i].published) {
+                                        out.push(pairsArray[i]);
+                                    }
+                                }
+                                let ret = [];
+                                for (let i = 0; i < out.length; i++) {
+                                    let compare = out[i].name.toLowerCase();
+                                    if (compare.contains(store.search.toLowerCase())) { ret.push(out[i]); }
+                                }
+                                out = ret.slice();
                             }
 
                             storeReducer({
                                 type: GlobalStoreActionType.UPDATE_VIEWING_LIST,
-                                payload: { viewing: top5List, pairs: out }
+                                payload: {
+                                    pairs: out,
+                                    viewing: top5List
+                                }
                             });
                         }
                     }
@@ -481,8 +670,9 @@ function GlobalStoreContextProvider(props) {
             }
             updateList(top5List);
         }
-        history.push("/");
+    //     // history.push("/");
     }
+
 
     // THIS FUNCTION PROCESSES CLOSING THE CURRENTLY LOADED LIST
     store.closeCurrentList = function () {
@@ -625,7 +815,6 @@ function GlobalStoreContextProvider(props) {
                     type: GlobalStoreActionType.SET_SEARCH,
                     payload: { pairs: ret, text: search }
                 });
-
             }
         } else if (store.user) { //returns lists created by 'search' (case-insensitive user name match)
             const response = await api.getTop5ListPairs();
@@ -643,7 +832,25 @@ function GlobalStoreContextProvider(props) {
                 });
             }
         } else if (store.community) { //returns community lists with name 'search' (case-insensitive list name match)
-
+            const response = await api.getTop5ListPairs();
+            if (response.data.success) {
+                let pairsArray = response.data.idNamePairs;
+                let out = [];
+                for (let i = 0; i < pairsArray.length; i++) {
+                    if (pairsArray[i].published) {
+                        out.push(pairsArray[i]);
+                    }
+                }
+                let ret = [];
+                for (let i = 0; i < out.length; i++) {
+                    let compare = out[i].name.toLowerCase();
+                    if (compare.contains(search.toLowerCase())) { ret.push(out[i]); }
+                }
+                storeReducer({
+                    type: GlobalStoreActionType.SET_SEARCH,
+                    payload: { pairs: ret, text: search }
+                });
+            }
         }
     }
 
@@ -666,6 +873,32 @@ function GlobalStoreContextProvider(props) {
         }
         else {
             console.log("API FAILED TO GET THE LIST PAIRS");
+        }
+    }
+
+    store.loadCommunityPairs = async function () { //store.communitylists
+        let out = store.communityLists;
+        storeReducer({
+            type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
+            payload: out
+        });
+    }
+    store.setGuest = async function (){
+        const response = await api.getTop5ListPairs();
+        if (response.data.success) {
+            let pairsArray = response.data.idNamePairs;
+
+            let out = [];
+            for (let i = 0; i < pairsArray.length; i++) {
+                if (pairsArray[i].published) {
+                    out.push(pairsArray[i]);
+                }
+            }
+
+            storeReducer({
+                type: GlobalStoreActionType.GUEST_LOGIN,
+                payload: out
+            });
         }
     }
 
@@ -853,6 +1086,86 @@ function GlobalStoreContextProvider(props) {
         store.updateCurrentList();
     }
 
+    // store.updateCommunity = function (newName, listItems) {
+    //     if (store.communityLists.length > 0) {
+    //         let exists = false;
+    //         let index = 0;
+    //         for (let i = 0; i < store.communityLists.length; i++) {
+    //             if (store.communityLists[i].name.toLowerCase() === newName.toLowerCase()) { //community list already exists
+    //                 exists = true;
+    //                 index = i;
+    //                 break;
+    //             }
+    //         }
+    //         if (exists) {
+    //             let currentMapping = store.communityLists[index];
+    //             for (let j = 0; j < 5; j++) {
+    //                 if (currentMapping.has(listItems[j])) {
+    //                     let value = currentMapping.get(listItems[j]) + (5 - j);
+    //                     currentMapping.set(listItems[j], value);
+    //                 }
+    //                 else { //create a new entry
+    //                     currentMapping.set(listItems[j], 5 - j);
+    //                 }
+    //             }
+    //             store.communityMaps[index] = currentMapping;
+    //             storeReducer({
+    //                 type: GlobalStoreActionType.UPDATE_COMMUNITY,
+    //                 payload: {
+    //                     list: store.communityLists,
+    //                     map: store.communityMaps
+    //                 }
+    //             });
+    //         } else {
+    //             let maps = store.communityMapping;
+    //             let lists = store.communityLists;
+    //             let hash = new Map();
+    //             for (let k = 0; k < 5; k++) {
+    //                 hash.set(listItems[k], 5 - k);
+    //             }
+    //             let payload = {
+    //                 name: newName,
+    //                 update: new Date(),
+    //                 views: 0,
+    //                 likes: 0,
+    //                 dislikes: 0
+    //             }
+    //             maps.push(hash);
+    //             lists.push(payload);
+    //             storeReducer({
+    //                 type: GlobalStoreActionType.UPDATE_COMMUNITY,
+    //                 payload: {
+    //                     list: lists,
+    //                     map: maps
+    //                 }
+    //             });
+    //         }
+    //     } else { //create new mappings
+    //         let maps = store.communityMapping;
+    //         let lists = store.communityLists;
+    //         let hash = new Map();
+    //         for (let k = 0; k < 5; k++) {
+    //             hash.set(listItems[k], 5 - k);
+    //         }
+    //         let payload = {
+    //             name: newName,
+    //             update: new Date().toDateString(),
+    //             views: 0,
+    //             likes: 0,
+    //             dislikes: 0
+    //         }
+    //         maps.push(hash);
+    //         lists.push(payload);
+    //         storeReducer({
+    //             type: GlobalStoreActionType.UPDATE_COMMUNITY,
+    //             payload: {
+    //                 list: lists,
+    //                 map: maps
+    //             }
+    //         });
+    //     }
+    // }
+
     store.changeList = async function (newName, listItems, pub) {
         let response = await api.getTop5ListById(store.currentList._id);
         if (response.data.success) {
@@ -861,13 +1174,17 @@ function GlobalStoreContextProvider(props) {
             top5List.items = listItems;
             top5List.published = pub;
 
+            // if (pub) {
+            //     store.updateCommunity(newName, listItems);
+            // }
+
             // if(pub){
             //     async function communities(){
             //         response = await api.getCommunities();
             //         if(response.data.success){
             //             let currentCommunities = response.data.top5Lists;
             //             let exists = false;
-            //             let id = ""
+            //             let id = "";
             //             for(let i = 0; i < currentCommunities.length; i++){
             //                 if(currentCommunities[i].name.toLowerCase() === newName.toLowerCase()){ //community list already exists
             //                     exists = true;
@@ -922,7 +1239,6 @@ function GlobalStoreContextProvider(props) {
                         response = await api.getTop5ListPairs();
                         if (response.data.success) {
                             let pairsArray = response.data.idNamePairs;
-
                             let out = [];
                             for (let i = 0; i < pairsArray.length; i++) {
                                 if (pairsArray[i].owner === auth.user.email) {
@@ -930,13 +1246,97 @@ function GlobalStoreContextProvider(props) {
                                 }
                             }
 
-                            storeReducer({
-                                type: GlobalStoreActionType.CHANGE_LIST_NAME,
-                                payload: {
-                                    idNamePairs: out,
-                                    top5List: null
+                            if (pub) {
+                                if (store.communityLists.length > 0) {
+                                    let exists = false;
+                                    let index = 0;
+                                    for (let i = 0; i < store.communityLists.length; i++) {
+                                        if (store.communityLists[i].name.toLowerCase() === newName.toLowerCase()) { //community list already exists
+                                            exists = true;
+                                            index = i;
+                                            break;
+                                        }
+                                    }
+                                    if (exists) {
+                                        let currentMapping = store.communityLists[index];
+                                        for (let j = 0; j < 5; j++) {
+                                            if (currentMapping.has(listItems[j])) {
+                                                let value = currentMapping.get(listItems[j]) + (5 - j);
+                                                currentMapping.set(listItems[j], value);
+                                            }
+                                            else { //create a new entry
+                                                currentMapping.set(listItems[j], 5 - j);
+                                            }
+                                        }
+                                        store.communityMaps[index] = currentMapping;
+                                        storeReducer({
+                                            type: GlobalStoreActionType.UPDATE_COMMUNITY,
+                                            payload: {
+                                                idNamePairs: out,
+                                                list: store.communityLists,
+                                                map: store.communityMaps
+                                            }
+                                        });
+                                    } else {
+                                        let maps = store.communityMapping;
+                                        let lists = store.communityLists;
+                                        let hash = new Map();
+                                        for (let k = 0; k < 5; k++) {
+                                            hash.set(listItems[k], 5 - k);
+                                        }
+                                        let d = new Date();
+                                        let payload = {
+                                            name: newName,
+                                            update: d.toDateString(),
+                                            views: 0,
+                                            likes: 0,
+                                            dislikes: 0
+                                        }
+                                        maps.push(hash);
+                                        lists.push(payload);
+                                        storeReducer({
+                                            type: GlobalStoreActionType.UPDATE_COMMUNITY,
+                                            payload: {
+                                                idNamePairs: out,
+                                                list: lists,
+                                                map: maps
+                                            }
+                                        });
+                                    }
+                                } else { //create new mappings
+                                    let maps = store.communityMapping;
+                                    let lists = store.communityLists;
+                                    let hash = new Map();
+                                    for (let k = 0; k < 5; k++) {
+                                        hash.set(listItems[k], 5 - k);
+                                    }
+                                    let payload = {
+                                        name: newName,
+                                        update: new Date(),
+                                        views: 0,
+                                        likes: 0,
+                                        dislikes: 0
+                                    }
+                                    maps.push(hash);
+                                    lists.push(payload);
+                                    storeReducer({
+                                        type: GlobalStoreActionType.UPDATE_COMMUNITY,
+                                        payload: {
+                                            idNamePairs: out,
+                                            list: lists,
+                                            map: maps
+                                        }
+                                    });
                                 }
-                            });
+                            }
+
+                            // storeReducer({
+                            //     type: GlobalStoreActionType.CHANGE_LIST_NAME,
+                            //     payload: {
+                            //         idNamePairs: out,
+                            //         top5List: null
+                            //     }
+                            // });
                         }
                     }
                     getListPairs(top5List);
@@ -946,6 +1346,10 @@ function GlobalStoreContextProvider(props) {
         }
         // store.updateCurrentList();
         history.push("/");
+    }
+
+    store.getViewingList = function() {
+        return store.viewingList;
     }
 
     return (

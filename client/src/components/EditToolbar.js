@@ -44,7 +44,6 @@ function EditToolbar(props) {
     }
     if(guest){
         home = 'disabled';
-
     }
 
     const openSortMenu = (event) => {

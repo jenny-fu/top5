@@ -147,9 +147,10 @@ function AuthContextProvider(props) {
     auth.loginGuest = function (store) {
         authReducer({ type: AuthActionType.GUEST_USER })
         history.push("/allLists"); //should be sent to community..
+        // store.setOption('all'); //doesnt set
+        // store.loadAllNamePairs();
         // store.setOption('all');
-        store.setOption('all'); //doesnt set
-        store.loadAllNamePairs();
+        store.setGuest();
     }
 
     auth.logoutUser = async function (store) {

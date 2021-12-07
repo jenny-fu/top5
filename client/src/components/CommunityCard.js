@@ -28,7 +28,7 @@ let listStyle = {
     
     @author McKilla Gorilla
 */
-function AllCard(props) {
+function CommunityCard(props) {
     const { store } = useContext(GlobalStoreContext);
     // const [editActive, setEditActive] = useState(false);
     // const [text, setText] = useState("");
@@ -36,7 +36,7 @@ function AllCard(props) {
     const [expand, setExpand] = useState(<div>
         <div id='list-bottom'>
             <div className='list-left'>
-                Published: <span style={{ color: 'green' }}>{idNamePair.pubDate}</span>
+                Updated: <span style={{ color: 'green' }}>{idNamePair.update}</span>
             </div>
             <div className="list-right" style={{ display: 'inline', padding: '8px' }}>
                 Views: <span style={{ color: 'red' }}> {idNamePair.views} </span>
@@ -90,7 +90,7 @@ function AllCard(props) {
         </List>
             <div id='list-bottom'>
                 <div className='list-left'>
-                    Published: <span style={{ color: 'green' }}>{idNamePair.pubDate}</span>
+                    Updated: <span style={{ color: 'green' }}>{idNamePair.update}</span>
                 </div>
                 <div className="list-right" style={{ display: 'inline', padding: '8px' }}>
                     Views: <span style={{ color: 'red' }}> {idNamePair.views} </span>
@@ -116,7 +116,7 @@ function AllCard(props) {
         setExpand(<div>
             <div id='list-bottom'>
                 <div className='list-left'>
-                    Published: <span style={{ color: 'green' }}>{idNamePair.pubDate}</span>
+                    Updated: <span style={{ color: 'green' }}>{idNamePair.update}</span>
                 </div>
                 <div className="list-right" style={{ display: 'inline', padding: '8px' }}>
                     Views: <span style={{ color: 'red' }}> {idNamePair.views} </span>
@@ -144,15 +144,12 @@ function AllCard(props) {
     return (
         <ListItem
             id={idNamePair._id}
-            key={idNamePair._id}
+            // key={idNamePair._id}
             sx={{ display: 'flex', p: 1 }}
             style={listStyle}>
             <div id='list-top'>
                 <div className="list-left">
-                    <Box
-                    >{idNamePair.name}
-                        <div id='list-owner'>By: <span style={{ textDecoration:'underline', color: 'blue', cursor:'pointer' }}>{idNamePair.ownerName}</span>  </div>
-                    </Box>
+                    {idNamePair.name}
                 </div>
                 <div id="list-right" style={{ display: 'inline' }}>
                     <Box style={{ display: 'inline', padding: '8px' }}>
@@ -174,4 +171,4 @@ function AllCard(props) {
     );
 }
 
-export default AllCard;
+export default CommunityCard;

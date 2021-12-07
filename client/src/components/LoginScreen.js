@@ -49,6 +49,8 @@ export default function LoginScreen() {
         }, store);
         if(!auth.loggedIn){
             handleOpen();
+        }else{
+            store.setOption('home');
         }
     };
 

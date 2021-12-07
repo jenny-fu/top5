@@ -10,7 +10,8 @@ import {
     LoginScreen,
     WorkspaceScreen,
     AllScreen,
-    UserScreen
+    UserScreen,
+    CommunityScreen
 } from './components'
 /*
     This is our application's top-level component.
@@ -36,6 +37,7 @@ const App = () => {
                         <Route path="/top5list/:id" exact component={WorkspaceScreen} />
                         <Route path="/allLists" exact component={AllScreen} />
                         <Route path="/userLists" exact component={UserScreen} />
+                        <Route path="/communityLists" exact component={CommunityScreen} />
                     </Switch>
                     {/* <Statusbar /> */}
                 </GlobalStoreContextProvider>

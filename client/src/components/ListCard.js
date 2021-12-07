@@ -94,25 +94,25 @@ function ListCard(props) {
         </div>
     </div>);
 
-    const [dislikeBox, setDislike] = useState(
+    const [dislikeBox, setDislikeView] = useState(
         <Box style={{ display: 'inline', padding: '8px' }}>
-            <IconButton onClick={(event) => { handleDislike(event, idNamePair._id) }}>
+            <IconButton onClick={(event) => { toggleDislike(event, idNamePair._id) }}>
                 <ThumbDownOutlinedIcon style={{ fontSize: '20pt', color: 'black' }} />
             </IconButton>
             <span>{idNamePair.dislikes}</span>
         </Box>);
 
-    const [likeBox, setLike] = useState(
+    const [likeBox, setLikeView] = useState(
         <Box style={{ display: 'inline', padding: '8px' }}>
-            <IconButton onClick={(event) => { handleLike(event, idNamePair._id) }}>
+            <IconButton onClick={(event) => { toggleLike(event, idNamePair._id) }}>
                 <ThumbUpOutlinedIcon style={{ fontSize: '20pt', color: 'black' }} />
             </IconButton>
             <span>{idNamePair.likes}</span>
         </Box>);
 
     const [open, setOpen] = useState(false);
-    const [liked, toggleLike] = useState(false);
-    const [disliked, toggleDislike] = useState(false);
+    const [liked, setLike] = useState(false);
+    const [disliked, setDislike] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
@@ -122,49 +122,51 @@ function ListCard(props) {
         store.setCurrentList(id);
     }
 
-    function handleDislike(event, id) {
-        let box = <Box></Box>;
-        if(!disliked){
-        box = <Box style={{ display: 'inline', padding: '8px' }}>
-            <IconButton onClick={(event) => { handleDislike(event, idNamePair._id) }}>
-                <ThumbDownIcon style={{ fontSize: '20pt', color: 'black' }} />
-            </IconButton>
-            <span>{idNamePair.dislikes}</span>
-        </Box>
-        }else{
-            box = <Box style={{ display: 'inline', padding: '8px' }}>
-            <IconButton onClick={(event) => { handleDislike(event, idNamePair._id) }}>
-                <ThumbDownOutlinedIcon style={{ fontSize: '20pt', color: 'black' }} />
-            </IconButton>
-            <span>{idNamePair.dislikes}</span>
-        </Box>
-        }
+    function toggleDislike(event, id) {
         event.stopPropagation();
-        store.dislike(id);
-        toggleDislike(!disliked);
-        setDislike(box)
+        let box = <Box></Box>;
+        if(!disliked){ //change to disliked
+            store.dislike(id, 1);
+            box = <Box style={{ display: 'inline', padding: '8px' }}>
+                <IconButton onClick={(event) => { toggleDislike(event, idNamePair._id) }}>
+                    <ThumbDownIcon style={{ fontSize: '20pt', color: 'black' }} />
+                </IconButton>
+                <span>{idNamePair.dislikes}</span>
+            </Box>
+        }else{
+            store.dislike(id, -1);
+            box = <Box style={{ display: 'inline', padding: '8px' }}>
+                <IconButton onClick={(event) => { toggleDislike(event, idNamePair._id) }}>
+                    <ThumbDownOutlinedIcon style={{ fontSize: '20pt', color: 'black' }} />
+                </IconButton>
+                <span>{idNamePair.dislikes}</span>
+            </Box>
+        }
+        setDislike(!disliked);
+        setDislikeView(box);
     }
-    function handleLike(event, id) {
-        let box = <Box></Box>;
-        if(!liked){
-            box = <Box style={{ display: 'inline', padding: '8px' }}>
-            <IconButton onClick={(event) => { handleLike(event, idNamePair._id) }}>
-                <ThumbUpIcon style={{ fontSize: '20pt', color: 'black' }} />
-            </IconButton>
-            <span>{idNamePair.likes}</span>
-        </Box>
-        }else{
-            box = <Box style={{ display: 'inline', padding: '8px' }}>
-            <IconButton onClick={(event) => { handleLike(event, idNamePair._id) }}>
-                <ThumbUpOutlinedIcon style={{ fontSize: '20pt', color: 'black' }} />
-            </IconButton>
-            <span>{idNamePair.likes}</span>
-        </Box>
-        }
+    function toggleLike(event, id) {
         event.stopPropagation();
-        store.like(id);
-        toggleLike(!liked);
-        setLike(box);
+        let box = <Box></Box>;
+        if(!liked){ //change to liked
+            store.like(id, 1);
+            box = <Box style={{ display: 'inline', padding: '8px' }}>
+                <IconButton onClick={(event) => { toggleLike(event, idNamePair._id) }}>
+                    <ThumbUpIcon style={{ fontSize: '20pt', color: 'black' }} />
+                </IconButton>
+                <span>{idNamePair.likes}</span>
+            </Box>
+        }else{
+            store.like(id, -1);
+            box = <Box style={{ display: 'inline', padding: '8px' }}>
+                <IconButton onClick={(event) => { toggleLike(event, idNamePair._id) }}>
+                    <ThumbUpOutlinedIcon style={{ fontSize: '20pt', color: 'black' }} />
+                </IconButton>
+                <span>{idNamePair.likes}</span>
+            </Box>
+        }
+        setLike(!liked);
+        setLikeView(box);
     }
 
     ////////////////////////////////////////////////EDIT CARD////////////////////////////////////////////
@@ -262,9 +264,10 @@ function ListCard(props) {
     }
     function handlePub(event) {
         event.stopPropagation();
-        let list = store.viewingList;
-        let items = [];
-        if(list) items = list.items;
+        // let list = store.getViewingList();
+        // console.log(list);
+        // let items = [];
+        // if(list) items = list.items;
         // console.log(list)
         pubStyle = {
             fontSize: '20pt',
@@ -374,7 +377,7 @@ function ListCard(props) {
                 <div className="list-left">
                     <Box
                     >{idNamePair.name}
-                        <div id='list-owner'>By: <Link style={{ color: 'blue' }}>{idNamePair.ownerName}</Link> </div>
+                        <div id='list-owner'>By: <span style={{ textDecoration:'underline', color: 'blue', cursor:'pointer' }}>{idNamePair.ownerName}</span> </div>
                     </Box>
                 </div>
                 <div id="list-right" style={{ display: 'inline' }}>
@@ -401,7 +404,7 @@ function ListCard(props) {
                 <div className="list-left">
                     <Box
                     >{idNamePair.name}
-                        <div id='list-owner'>By: <Link style={{ color: 'blue' }}>{idNamePair.ownerName}</Link> </div>
+                        <div id='list-owner'>By: <span style={{ textDecoration:'underline', color: 'blue', cursor:'pointer' }}>{idNamePair.ownerName}</span> </div>
                     </Box>
                 </div>
                 <div id="list-right" style={{ display: 'inline' }}>

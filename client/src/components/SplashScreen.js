@@ -6,12 +6,14 @@ import ConnectWithoutContactIcon from '@mui/icons-material/ConnectWithoutContact
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom'
 import Box from '@mui/material/Box';
+import { GlobalStoreContext } from '../store/index.js'
 
 export default function SplashScreen() {
+    const { store } = useContext(GlobalStoreContext);
     const { auth } = useContext(AuthContext);
 
     function handleGuestLogin(){
-        auth.loginGuest();
+        auth.loginGuest(store);
     }
 
     return (

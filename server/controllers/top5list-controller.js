@@ -73,7 +73,7 @@ updateTop5Likes = async (req, res) => {
             })
     })
 }
-updateTop5Views = async (req, res) => {
+updateTop5Dislikes = async (req, res) => {
     const body = req.body
     console.log("updateTop5List: " + JSON.stringify(body));
     if (!body) {
@@ -92,7 +92,7 @@ updateTop5Views = async (req, res) => {
             })
         }
 
-        top5List.views = body.views
+        top5List.dislikes = body.dislikes
         top5List
             .save()
             .then(() => {
@@ -100,6 +100,46 @@ updateTop5Views = async (req, res) => {
                 return res.status(200).json({
                     success: true,
                     id: top5List._id,
+                    message: 'Top 5 List updated!',
+                })
+            })
+            .catch(error => {
+                console.log("FAILURE: " + JSON.stringify(error));
+                return res.status(404).json({
+                    error,
+                    message: 'Top 5 List not updated!',
+                })
+            })
+    })
+}
+updateTop5Views = async (req, res) => {
+    console.log("updateTop5List: " + JSON.stringify(body));
+    // if (!body) {
+    //     return res.status(400).json({
+    //         success: false,
+    //         error: 'You must provide a body to update',
+    //     })
+    // }
+
+    Top5List.findOne({ _id: req.params.id }, (err, top5List) => {
+        console.log("top5List found: " + JSON.stringify(top5List));
+        if (err) {
+            return res.status(404).json({
+                err,
+                message: 'Top 5 List not found!',
+            })
+        }
+
+        // top5List.views = body
+        let views = top5List.views;
+        top5List.views = views + 1;
+        top5List
+            .save()
+            .then(() => {
+                console.log("SUCCESS!!!");
+                return res.status(200).json({
+                    success: true,
+                    list: top5List,
                     message: 'Top 5 List updated!',
                 })
             })
@@ -239,5 +279,6 @@ module.exports = {
     getTop5ListPairs,
     getTop5ListById,
     updateTop5Likes,
-    updateTop5Views
+    updateTop5Views,
+    updateTop5Dislikes
 }
